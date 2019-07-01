@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">SwimMaster</string>
+    <string name="app_name">Swim Master</string>
+    <string name="swim_master">Swim\nMaster</string>
+
+    <string name="login">Login</string>
+    <string name="email">e-mail</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+
+    <string name="single_workout">Single Workout</string>
+    <string name="training_plan">Training Plan</string>
+    <string name="training_log">Training Log</string>
+    <string name="times_log">Times Log</string>
+
 </resources>
