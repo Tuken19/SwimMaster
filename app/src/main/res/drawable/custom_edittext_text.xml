@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:color="@color/secondary"
-        app:state_error="false" />
-    <item android:color="@color/error"
-        app:state_error="true"/>
+    <item
+        app:state_error="false"
+        android:color="@color/secondary"
+    />
+    <item
+        app:state_error="true"
+        android:color="@color/error"
+    />
 </selector>

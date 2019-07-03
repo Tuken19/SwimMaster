@@ -6,4 +6,186 @@
     android:layout_height="match_parent"
     tools:context=".MainMenuActivity">
 
+    <!--Background-->
+    <View
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/custom_background"
+        android:textAlignment="gravity" />
+
+    <!--Single Workout-->
+    <RelativeLayout
+        android:id="@+id/SingleWorkout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/custom_tile_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/title1"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/single_workout" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/custom_icon_background"
+            android:src="@drawable/custom_swimmer_icon" />
+
+        <TextView
+            style="@style/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/single_workout" />
+    </RelativeLayout>
+
+    <!--Training Plan-->
+    <RelativeLayout
+        android:id="@+id/TrainingPlan"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/custom_tile_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SingleWorkout">
+
+        <TextView
+            android:id="@+id/title2"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/training_plan" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/custom_icon_background"
+            android:src="@drawable/custom_many_waves_icon" />
+
+        <TextView
+            style="@style/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title2"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/training_plan" />
+    </RelativeLayout>
+
+    <!--Training Log-->
+    <RelativeLayout
+        android:id="@+id/TrainingLog"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/custom_tile_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TrainingPlan">
+
+        <TextView
+            android:id="@+id/title3"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/training_log" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/custom_icon_background"
+            android:src="@drawable/custom_calendar_icon" />
+
+        <TextView
+            style="@style/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title3"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/training_log" />
+    </RelativeLayout>
+
+    <!--Times Log-->
+    <RelativeLayout
+        android:id="@+id/TimesLog"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/custom_tile_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TrainingLog">
+
+        <TextView
+            android:id="@+id/title4"
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/times_log" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/custom_icon_background"
+            android:src="@drawable/custom_timer_icon" />
+
+        <TextView
+            style="@style/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title4"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/times_log" />
+    </RelativeLayout>
+
+    <!-- Sign out -->
+    <Button
+        android:id="@+id/sign_out"
+        style="@style/sign_up"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/custom_button"
+        android:elevation="10dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/sign_out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

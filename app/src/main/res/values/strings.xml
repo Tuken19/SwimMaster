@@ -2,10 +2,16 @@
     <string name="app_name">Swim Master</string>
     <string name="swim_master">Swim\nMaster</string>
 
-    <string name="login">Login</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign out</string>
     <string name="email">e-mail</string>
     <string name="password">Password</string>
-    <string name="sign_up">Sign Up</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="remember">Password must contain at least one capital letter and one number!</string>
+
+    <string name="wrong_credentials">Credentials mismatch!</string>
+    <string name="wrong_email">Wrong e-mail provided!</string>
 
     <string name="single_workout">Single Workout</string>
     <string name="training_plan">Training Plan</string>

@@ -13,7 +13,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/custom_background"
-        android:textAlignment="gravity"/>
+        android:textAlignment="gravity" />
 
     <!-- Swim Master -->
     <TextView
@@ -42,27 +42,51 @@
         android:background="@drawable/custom_button"
         android:elevation="10dp"
         android:gravity="center_vertical|center_horizontal"
-        android:text="@string/login"
+        android:text="@string/sign_in"
         app:layout_constraintBottom_toTopOf="@id/log_in_with_google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Login with Google -->
-    <Button
-        android:id="@+id/log_in_with_google"
-        style="@style/sign_up"
-        android:layout_width="280dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/custom_button"
-        android:elevation="10dp"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="@string/login"
-        app:layout_constraintBottom_toTopOf="@id/sign_up"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--Login with Google -->
+        <RelativeLayout
+            android:id="@+id/log_in_with_google"
+            android:background="@drawable/custom_google_button"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="10dp"
+            android:gravity="center_vertical|center_horizontal"
+            app:layout_constraintBottom_toTopOf="@id/sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/IV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="8dp"
+                android:src="@drawable/custom_google_icon" />
+
+            <TextView
+                android:id="@+id/TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/secondary"
+                android:textSize="24sp"
+                android:fontFamily="Roboto"
+                android:gravity="center"
+                android:text="@string/sign_in_with_google"
+                android:layout_toRightOf="@id/IV"/>
+
+        </RelativeLayout>
 
     <!-- Sign Up -->
     <Button

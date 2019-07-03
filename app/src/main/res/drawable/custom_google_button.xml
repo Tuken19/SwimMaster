@@ -8,8 +8,8 @@
 
             <gradient
                 android:angle="90"
-                android:endColor="@color/accent_dark"
-                android:startColor="@color/accent" />
+                android:endColor="#ffffff"
+                android:startColor="#FFF7F7F7" />
         </shape>
     </item>
 
@@ -20,8 +20,8 @@
 
             <gradient
                 android:angle="270"
-                android:endColor="@color/accent_dark"
-                android:startColor="@color/accent"/>
+                android:endColor="#ffffff"
+                android:startColor="#FFF7F7F7"/>
         </shape>
     </item>
 

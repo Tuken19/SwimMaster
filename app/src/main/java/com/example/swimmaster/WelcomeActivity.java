@@ -24,7 +24,7 @@ public class WelcomeActivity extends AppCompatActivity {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        CountDownTimer cdt = new CountDownTimer(2000, 1000) {
+        CountDownTimer cdt = new CountDownTimer(1000, 1000) {
             @Override
             public void onTick(long l) {
             }
