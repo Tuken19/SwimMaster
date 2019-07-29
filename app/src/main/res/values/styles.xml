@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/accent</item>
         <item name="android:colorSecondary">@color/secondary</item>
         <item name="android:fontFamily">@font/khand_medium</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <!-- Welcome screen theme. -->
@@ -60,4 +61,41 @@
         <item name="android:textColor">@color/secondary_transparent</item>
         <item name="android:fontFamily">@font/khand_medium</item>
     </style>
+
+    <!--Description with animations-->
+    <style name="description.material_animations" parent="description">
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">@transition/changebounds</item>
+        <item name="android:windowSharedElementExitTransition">@transition/changebounds</item>
+    </style>
+
+    <!--Basic Text-->
+    <style name="basic_text">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@drawable/state_colors_selector</item>
+        <item name="android:fontFamily">@font/khand_medium</item>
+    </style>
+
+    <!--Basic Text with animations-->
+    <style name="basic_text.material_animations" parent="basic_text">
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">@transition/changebounds</item>
+        <item name="android:windowSharedElementExitTransition">@transition/changebounds</item>
+    </style>
+
+    <!--Tab Text-->
+    <style name="text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@drawable/state_colors_selector</item>
+        <item name="android:fontFamily">@font/khand_medium</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

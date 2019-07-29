@@ -11,10 +11,26 @@
         android:roundIcon="@mipmap/icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TimesLogActivity"></activity>
-        <activity android:name=".TrainingLogActivity" />
-        <activity android:name=".TrainingPlanActivity" />
-        <activity android:name=".SingleWorkoutActivity" />
+        <activity android:name=".SingleWorkoutInfoActivity"></activity>
+        <activity
+            android:name=".TimerActivity"
+            android:parentActivityName=".TimesLogActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:parentActivityName=".MainMenuActivity" />
+        <activity
+            android:name=".TimesLogActivity"
+            android:label="@string/title_activity_times"
+            android:parentActivityName=".MainMenuActivity" />
+        <activity
+            android:name=".TrainingLogActivity"
+            android:parentActivityName=".MainMenuActivity" />
+        <activity
+            android:name=".TrainingPlanActivity"
+            android:parentActivityName=".MainMenuActivity" />
+        <activity
+            android:name=".SingleWorkoutActivity"
+            android:parentActivityName=".MainMenuActivity" />
         <activity
             android:name=".LoginActivity"
             android:theme="@style/WelcomeScreen" />

@@ -14,6 +14,7 @@
 
     <color name="accent_dark">#FF9800</color>
 
+    <color name="primary_dark_transparent">#CC0288D1</color>
     <color name="secondary_transparent">#990D47A1</color>
     <color name="transparent">#00000000</color>
     <color name="red_transparent">#33F44336</color>

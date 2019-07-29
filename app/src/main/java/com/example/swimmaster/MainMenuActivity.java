@@ -1,42 +1,46 @@
 package com.example.swimmaster;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    Button signOutButton;
+    ActionBar actionBar;
+    ImageButton profileButton;
     RelativeLayout singleWorkout;
     RelativeLayout trainingPlan;
     RelativeLayout trainingLog;
     RelativeLayout timesLog;
-    GoogleSignInClient mGoogleSignInClient;
+
+    public static GoogleSignInClient mGoogleSignInClient;
+
+    public static String personName;
+    public static String personEmail;
+    public static String personId;
+    public static Uri personPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        signOutButton = findViewById(R.id.sign_out);
-        singleWorkout = findViewById(R.id.SingleWorkout);
-        trainingPlan = findViewById(R.id.TrainingPlan);
-        trainingLog = findViewById(R.id.TrainingLog);
-        timesLog = findViewById(R.id.TimesLog);
+        initializeFields();
+
+        // =======================================
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -47,25 +51,12 @@ public class MainMenuActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // ========== Sign out ==========
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.sign_out:
-                        signOut();
-                        break;
-                }
-            }
-        });
-        // ==============================
-
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
+            personName = acct.getDisplayName();
+            personEmail = acct.getEmail();
+            personId = acct.getId();
+            personPhoto = acct.getPhotoUrl();
         }
 
         // ========== Jump to other activities ==========
@@ -96,7 +87,7 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
         // ========================
-        // ===== Times Log =====
+        // ===== TimesLogActivity Log =====
         timesLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,17 +96,31 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         });
         // =====================
+        // ===== Profile =====
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent profileIntent = new Intent(MainMenuActivity.this, ProfileActivity.class);
+                startActivity(profileIntent);
+            }
+        });
+        // ===================
         // ==============================================
     }
 
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(MainMenuActivity.this, "Signed out!", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                });
+    private void initializeFields(){
+        singleWorkout = findViewById(R.id.SingleWorkout);
+        trainingPlan = findViewById(R.id.TrainingPlan);
+        trainingLog = findViewById(R.id.TrainingLog);
+        timesLog = findViewById(R.id.TimesLog);
+
+        // ========== Custom Action Bar ==========
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View actionBarView = layoutInflater.inflate(R.layout.custom_action_bar, null);
+        actionBar.setCustomView(actionBarView);
+
+        profileButton = findViewById(R.id.profile);
     }
 }
