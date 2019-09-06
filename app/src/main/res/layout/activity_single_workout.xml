@@ -15,21 +15,116 @@
         android:background="@drawable/custom_background"
         android:textAlignment="gravity" />
 
-    <ListView
-        android:id="@+id/list_view_single_workout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="88dp"
-        android:focusable="true"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:transitionName="anim">
+    <TextView
+        android:id="@+id/date_field"
+        style="@style/basic_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </ListView>
+    <EditText
+        android:id="@+id/editDate"
+        style="@style/text"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:focusable="false"
+        android:hint="@string/edit_date_hint"
+        android:inputType="date"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/date_field"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/date_field"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="88dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                style="@style/basic_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Warm_up" />
+
+            <ListView
+                android:id="@+id/list_view_warm_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:transitionName="anim">
+
+            </ListView>
+
+            <TextView
+                style="@style/basic_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Main_set" />
+
+            <ListView
+                android:id="@+id/list_view_main_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:transitionName="anim">
+
+            </ListView>
+
+            <TextView
+                style="@style/basic_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Cooldown" />
+
+            <ListView
+                android:id="@+id/list_view_cooldown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:transitionName="anim">
+
+            </ListView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/log"
+        style="@style/sign_up"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/log"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_S_W"
+        android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

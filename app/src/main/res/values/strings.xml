@@ -36,12 +36,12 @@
 
     <!--TimesLogActivity Activity-->
     <string-array name="swimming_styles">
-        <item> -- choose --</item>
-        <item>Butterfly</item>
-        <item>Backstroke</item>
-        <item>Breaststroke</item>
-        <item>Freestyle</item>
-        <item>Medley</item>
+        <item> -- choose -- </item>
+        <item> Butterfly </item>
+        <item> Backstroke </item>
+        <item> Breaststroke </item>
+        <item> Freestyle </item>
+        <item> Medley </item>
     </string-array>
 
     <string name="fr_abbrev">FR</string>.
@@ -80,15 +80,15 @@
     <string name="edit_date_hint">01/01/2019</string>
 
     <string-array name="distances">
-        <item> -- choose --</item>
-        <item>25 m</item>
-        <item>50 m</item>
-        <item>100 m</item>
-        <item>200 m</item>
-        <item>400 m</item>
-        <item>500 m</item>
-        <item>1000 m</item>
-        <item>1500 m</item>
+        <item> -- choose -- </item>
+        <item> 25 m </item>
+        <item> 50 m </item>
+        <item> 100 m </item>
+        <item> 200 m </item>
+        <item> 400 m </item>
+        <item> 500 m </item>
+        <item> 1000 m </item>
+        <item> 1500 m </item>
     </string-array>
 
     <string name="create">Create</string>
@@ -99,5 +99,55 @@
     <string name="name_anim">Name Animation</string>
     <string name="date_anim">Date Animation</string>
     <string name="button_anim">Button Animation</string>
+
+    <!--Single Workout Activity -->
+    <string name="Warm_up">Warm-up:</string>
+    <string name="Main_set">Main set:</string>
+    <string name="Cooldown">Cooldown:</string>
+    <string name="log">Log</string>
+
+    <!--Single Workout Popup-->
+    <string name="category">Category</string>
+    <string-array name="category_array">
+        <item> -- choose -- </item>
+        <item> Warm-up </item>
+        <item> Main set </item>
+        <item> Cooldown </item>
+    </string-array>
+
+    <string name="repetitions">Repetitions:</string>
+    <string name="repetitions_hint">0</string>
+
+    <string name="type">Type:</string>
+    <string-array name="type_array">
+        <item> -- choose -- </item>
+        <item> Swim </item>
+        <item> Kick </item>
+        <item> Pull </item>
+    </string-array>
+
+    <string name="pace">Peace:</string>
+
+    <string-array name="pace_array">
+        <item> -- choose -- </item>
+        <item> Slow </item>
+        <item> Moderate </item>
+        <item> Fast </item>
+        <item> Sprint </item>
+    </string-array>
+
+    <string name="rest">Rest:</string>
+    <string name="rest_hint">0</string>
+
+    <string name="additions">Additions:</string>
+    <string name="legs">Legs only</string>
+    <string name="arms">Arms only</string>
+    <string name="kick_board">Kick board</string>
+    <string name="pull_buoy">Pull buoy</string>
+    <string name="paddles">Paddles</string>
+    <string name="fins">Fins</string>
+
+    <string name="add">Add</string>
+
 
 </resources>

@@ -131,7 +131,7 @@ public class TimesLogActivity extends AppCompatActivity implements AdapterView.O
                 popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 Button saveButton = popupView.findViewById(R.id.saveButton);
 
-                // =========== Spinner distance ===========
+                // =========== Spinner styles ===========
                 spinnerStyles = popupView.findViewById(R.id.spinner_styles);
                 adapterStyles = ArrayAdapter.createFromResource(popupView.getContext(), R.array.swimming_styles, R.layout.custom_spinner);
                 adapterStyles.setDropDownViewResource(R.layout.custom_spinner);

@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static com.example.swimmaster.SingleWorkoutActivity.SW_KEY;
+import static com.example.swimmaster.TrainingLogActivity.W_KEY;
 
 public class SingleWorkoutInfoActivity extends AppCompatActivity {
 
@@ -44,7 +44,6 @@ public class SingleWorkoutInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_workout_info);
-
     }
 
     @Override
@@ -57,7 +56,7 @@ public class SingleWorkoutInfoActivity extends AppCompatActivity {
                 long pos = -1;
                 Bundle extras = getIntent().getExtras();
                 if (extras != null) {
-                    pos = extras.getLong(SW_KEY);
+                    pos = extras.getLong(W_KEY);
                 }
 
                 for (DataSnapshot element : dataSnapshot.getChildren()) {

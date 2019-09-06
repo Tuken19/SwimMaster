@@ -15,16 +15,17 @@
         android:background="@drawable/custom_background"
         android:textAlignment="gravity" />
 
-    <ScrollView
-        android:id="@+id/scroll"
+    <ListView
+        android:id="@+id/list_view_single_workout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="88dp"
+        android:focusable="true"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        android:transitionName="anim">
 
-
-
-    </ScrollView>
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
