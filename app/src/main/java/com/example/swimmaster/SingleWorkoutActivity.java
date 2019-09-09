@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -135,6 +137,8 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                 warmUpTaskArray = new ArrayList<Task>();
                 arrayAdapterWarmUpTask = new TaskAdapter(SingleWorkoutActivity.this, warmUpTaskArray);
                 listViewWarmUpTask.setAdapter(arrayAdapterWarmUpTask);
+                listViewWarmUpTask.setScrollContainer(false);
+                //justifyListViewHeightBasedOnChildren(listViewWarmUpTask);
 
                 mainSetTaskArray = new ArrayList<Task>();
                 arrayAdapterMainSetTask = new TaskAdapter(SingleWorkoutActivity.this, mainSetTaskArray);
@@ -492,6 +496,27 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
         }
 
         return valid;
+    }
+
+    public void justifyListViewHeightBasedOnChildren (ListView listView) {
+
+        ListAdapter adapter = listView.getAdapter();
+
+        if (adapter == null) {
+            return;
+        }
+        ViewGroup vg = listView;
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, vg);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams par = listView.getLayoutParams();
+        par.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
+        listView.setLayoutParams(par);
+        listView.requestLayout();
     }
 
     @Override

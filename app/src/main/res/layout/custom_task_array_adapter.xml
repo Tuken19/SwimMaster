@@ -1,41 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <TextView
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        style="@style/basic_text"
         android:id="@+id/number_field"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="1." />
 
-    <TextView
-        android:id="@+id/distance_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/style_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/type_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/basic_text"
+                android:id="@+id/style_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Butterfly" />
 
-    <TextView
-        android:id="@+id/repetitions_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/basic_text"
+                android:id="@+id/repetitions_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5" />
 
-    <TextView
-        android:id="@+id/pace_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/x"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/basic_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="x" />
 
-    <TextView
-        android:id="@+id/rest_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/basic_text"
+                android:id="@+id/distance_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="400 m" />
 
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type:" />
+
+            <TextView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="16dp"
+                style="@style/text"
+                android:id="@+id/type_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="swim" />
+
+            <TextView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pace:" />
+
+            <TextView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="16dp"
+                style="@style/text"
+                android:id="@+id/pace_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fast" />
+
+            <TextView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rest:" />
+
+            <TextView
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                style="@style/text"
+                android:id="@+id/rest_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30" />
+
+            <TextView
+                android:id="@+id/s"
+                android:layout_marginEnd="4dp"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="s" />
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

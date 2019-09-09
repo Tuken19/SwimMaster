@@ -16,6 +16,7 @@
         android:textAlignment="gravity" />
 
     <TextView
+        android:textColor="@color/accent"
         android:id="@+id/date_field"
         style="@style/basic_text"
         android:layout_width="wrap_content"
@@ -43,6 +44,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/date_field"
         app:layout_constraintStart_toStartOf="parent"
+        android:fadingEdgeLength="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
         android:layout_marginBottom="88dp">
 
 
@@ -53,12 +57,13 @@
             android:padding="16dp">
 
             <TextView
+                android:textColor="@color/accent"
                 style="@style/basic_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Warm_up" />
 
-            <ListView
+            <com.example.swimmaster.NonScrollListView
                 android:id="@+id/list_view_warm_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,17 +71,19 @@
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:transitionName="anim">
+                android:transitionName="anim"
+                android:layout_marginBottom="16dp">
 
-            </ListView>
+            </com.example.swimmaster.NonScrollListView>
 
             <TextView
+                android:textColor="@color/accent"
                 style="@style/basic_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Main_set" />
 
-            <ListView
+            <com.example.swimmaster.NonScrollListView
                 android:id="@+id/list_view_main_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,17 +91,19 @@
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:transitionName="anim">
+                android:transitionName="anim"
+                android:layout_marginBottom="16dp" >
 
-            </ListView>
+            </com.example.swimmaster.NonScrollListView>
 
             <TextView
+                android:textColor="@color/accent"
                 style="@style/basic_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Cooldown" />
 
-            <ListView
+            <com.example.swimmaster.NonScrollListView
                 android:id="@+id/list_view_cooldown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,9 +111,10 @@
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
-                android:transitionName="anim">
+                android:transitionName="anim"
+                android:layout_marginBottom="16dp" >
 
-            </ListView>
+            </com.example.swimmaster.NonScrollListView>
 
         </LinearLayout>
 
