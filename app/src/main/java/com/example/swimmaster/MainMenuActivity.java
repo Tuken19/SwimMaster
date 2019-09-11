@@ -17,6 +17,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainMenuActivity extends AppCompatActivity {
 
     ActionBar actionBar;
@@ -27,6 +30,7 @@ public class MainMenuActivity extends AppCompatActivity {
     RelativeLayout timesLog;
 
     public static GoogleSignInClient mGoogleSignInClient;
+    public static List<SingleWorkout> mWorkoutsList = new ArrayList<>();
 
     public static String personName;
     public static String personEmail;

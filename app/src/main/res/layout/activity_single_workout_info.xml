@@ -15,70 +15,118 @@
         android:background="@drawable/custom_background"
         android:textAlignment="gravity" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/RL"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="88dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/RL"
+        <TextView
+            android:id="@+id/name"
+            style="@style/basic_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:paddingEnd="4dp"
+            android:text="@string/name"
+            android:textColor="@color/accent" />
+
+        <TextView
+            android:id="@+id/name_field"
+            style="@style/basic_text.material_animations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:layout_toEndOf="@+id/name"
+            android:text="Name"
+            android:transitionName="@string/name_anim" />
+
+        <TextView
+            android:id="@+id/date_field"
+            style="@style/description.material_animations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="data"
+            android:transitionName="@string/date_anim" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/RL"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/name"
                 style="@style/basic_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:text="@string/name" />
+                android:text="@string/Warm_up"
+                android:textColor="@color/accent" />
+
+            <com.example.swimmaster.NonScrollListView
+                android:id="@+id/list_view_warm_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:transitionName="anim">
+
+            </com.example.swimmaster.NonScrollListView>
 
             <TextView
-                android:id="@+id/name_field"
-                style="@style/basic_text.material_animations"
+                style="@style/basic_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/name"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:text="Name"
-                android:transitionName="@string/name_anim" />
+                android:text="@string/Main_set"
+                android:textColor="@color/accent" />
+
+            <com.example.swimmaster.NonScrollListView
+                android:id="@+id/list_view_main_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:transitionName="anim">
+
+            </com.example.swimmaster.NonScrollListView>
 
             <TextView
-                android:id="@+id/date_field"
-                style="@style/description.material_animations"
+                style="@style/basic_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:text="data"
-                android:transitionName="@string/date_anim" />
+                android:text="@string/Cooldown"
+                android:textColor="@color/accent" />
 
-        </RelativeLayout>
+            <com.example.swimmaster.NonScrollListView
+                android:id="@+id/list_view_cooldown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:focusable="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:transitionName="anim">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </ListView>
-
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_tasks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:background="@drawable/custom_button"
-        app:srcCompat="@drawable/custom_add_32dp" />
-
+            </com.example.swimmaster.NonScrollListView>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

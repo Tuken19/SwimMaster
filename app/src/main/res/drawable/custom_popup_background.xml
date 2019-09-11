@@ -7,6 +7,16 @@
         </shape>
     </item>
     <item
+        android:start="12dp"
+        android:end="12dp"
+        android:top="12dp"
+        android:bottom="12dp">
+        <shape>
+            <solid android:color="@color/secondary_transparent" />
+            <corners android:radius="30dp" />
+        </shape>
+    </item>
+    <item
         android:start="16dp"
         android:end="16dp"
         android:top="16dp"

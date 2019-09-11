@@ -1,5 +1,6 @@
 package com.example.swimmaster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
@@ -10,7 +11,7 @@ public class Task {
     private String mPace;
     private int mRepetitions;
     private int mRest;
-    private List<String> mAdditions;
+    private List<String> mAdditions = new ArrayList<String>();
 
     Task(){
 
@@ -94,4 +95,8 @@ public class Task {
         this.mAdditions = additions;
     }
     // ===================
+
+    public boolean isAdditionsEmpty(){
+        return mAdditions.isEmpty();
+    }
 }

@@ -52,6 +52,18 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         TextView restField = listItem.findViewById(R.id.rest_field);
         restField.setText(String.valueOf(currentTask.getRest()));
 
+        TextView additionsField = listItem.findViewById(R.id.additions_field);
+        if(!currentTask.isAdditionsEmpty()){
+            additionsField.setVisibility(View.VISIBLE);
+            List<String> additions = currentTask.getAdditions();
+            String additionsText = "";
+            for (String a : additions){
+                additionsText += "\u2022 "+a;
+                additionsText += "\t\t\t";
+            }
+            additionsField.setText(additionsText);
+        }
+
         return listItem;
     }
 }

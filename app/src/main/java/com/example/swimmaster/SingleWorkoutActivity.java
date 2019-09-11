@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,7 +17,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -43,10 +41,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static com.example.swimmaster.MainMenuActivity.mWorkoutsList;
+
 public class SingleWorkoutActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private final static String TAG = "SingleWorkoutActivity";
     private DatabaseReference mDatabase;
+    private DatabaseReference logDatabase;
     private long maxWarmUpId = 0;
     private long maxMainSetId = 0;
     private long maxCooldownId = 0;
@@ -69,9 +70,11 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
 
     Calendar dateCalendar;
     EditText editDate;
+    EditText editName;
     DatePickerDialog.OnDateSetListener date;
 
     FloatingActionButton add;
+    Button logButton;
 
     View background;
     View popupView;
@@ -137,8 +140,6 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                 warmUpTaskArray = new ArrayList<Task>();
                 arrayAdapterWarmUpTask = new TaskAdapter(SingleWorkoutActivity.this, warmUpTaskArray);
                 listViewWarmUpTask.setAdapter(arrayAdapterWarmUpTask);
-                listViewWarmUpTask.setScrollContainer(false);
-                //justifyListViewHeightBasedOnChildren(listViewWarmUpTask);
 
                 mainSetTaskArray = new ArrayList<Task>();
                 arrayAdapterMainSetTask = new TaskAdapter(SingleWorkoutActivity.this, mainSetTaskArray);
@@ -189,10 +190,18 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                     dateCalendar.set(Calendar.MONTH, month);
                     dateCalendar.set(Calendar.DAY_OF_MONTH, day);
 
-                    String myFormat = "dd/MM/yyyy";
+                    String myFormat = "EEEE, dd/MM/yyyy";
                     SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
 
                     editDate.setText(sdf.format(dateCalendar.getTime()));
+
+                    editDate.setError(null);
+                    if(!TextUtils.isEmpty(editName.getText())){
+                        logButton.setEnabled(true);
+                    }
+                    else{
+                        editName.setError("Required.");
+                    }
                 }
             };
 
@@ -206,6 +215,21 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                 }
             });
         }
+        // =======================================
+
+        // ============= Name Picker =============
+        editName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editName.setError(null);
+                if(!TextUtils.isEmpty(editDate.getText())){
+                    logButton.setEnabled(true);
+                }
+                else{
+                    editDate.setError("Required.");
+                }
+            }
+        });
         // =======================================
 
         // ================ Add new task ===============
@@ -268,6 +292,15 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                     editRest = popupView.findViewById(R.id.edit_rest);
                     // =======================================
 
+                    // ============= CheckBoxes ==============
+                    legs = popupView.findViewById(R.id.legs);
+                    kick = popupView.findViewById(R.id.kick);
+                    fins = popupView.findViewById(R.id.fins);
+                    arms = popupView.findViewById(R.id.arms);
+                    buoy = popupView.findViewById(R.id.buoy);
+                    paddles = popupView.findViewById(R.id.paddles);
+                    // =======================================
+
                     addButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -279,7 +312,26 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                                 String pace = spinnerPace.getSelectedItem().toString();
                                 int repetitions = Integer.parseInt(editRepetitions.getText().toString());
                                 int rest = Integer.parseInt(editRest.getText().toString());
-                                List<String> additions = null;
+                                List<String> additions = new ArrayList<>();
+
+                                if(legs.isChecked()){
+                                    additions.add(legs.getText().toString());
+                                }
+                                if(kick.isChecked()){
+                                    additions.add(kick.getText().toString());
+                                }
+                                if(fins.isChecked()){
+                                    additions.add(fins.getText().toString());
+                                }
+                                if(arms.isChecked()){
+                                    additions.add(arms.getText().toString());
+                                }
+                                if(buoy.isChecked()){
+                                    additions.add(buoy.getText().toString());
+                                }
+                                if(paddles.isChecked()){
+                                    additions.add(paddles.getText().toString());
+                                }
 
                                 Task task;
 
@@ -312,6 +364,35 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                 }
             });
         }
+        // =============================================
+
+
+        // ========= Log Single Workout ================
+        logButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name = editName.getText().toString();
+                String myFormat = "dd MM yyyy hh:mm:ss ";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                String creation_date = sdf.format(Calendar.getInstance().getTime());
+
+                SingleWorkout customSingleWorkout = new SingleWorkout(name, editDate.getText().toString(), warmUpTaskArray, mainSetTaskArray, cooldownTaskArray, creation_date);
+                mWorkoutsList.add(customSingleWorkout);
+                logDatabase.setValue(mWorkoutsList);
+                mDatabase.removeValue();
+
+                editName.clearFocus();
+                editDate.clearFocus();
+
+                arrayAdapterWarmUpTask.clear();
+                arrayAdapterMainSetTask.clear();
+                arrayAdapterCooldownTask.clear();
+                arrayAdapterWarmUpTask.notifyDataSetChanged();
+                arrayAdapterMainSetTask.notifyDataSetChanged();
+                arrayAdapterCooldownTask.notifyDataSetChanged();
+                finish();
+            }
+        });
         // =============================================
 
         {
@@ -432,16 +513,21 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
         mAuth = FirebaseAuth.getInstance();
         mFBUser = mAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("SingleWorkout");
+        logDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("TrainingLog");
 
         listViewWarmUpTask = findViewById(R.id.list_view_warm_up);
         listViewMainSetTask = findViewById(R.id.list_view_main_set);
         listViewCooldownTask = findViewById(R.id.list_view_cooldown);
 
-        editDate = findViewById(R.id.editDate);
+        editDate = findViewById(R.id.edit_date);
+        editName = findViewById(R.id.edit_name);
 
+        // =============== Buttons ===============
         add = findViewById(R.id.add);
+        logButton = findViewById(R.id.log);
+        // =======================================
 
-        // =========== Add time popup ============
+        // ====== Add Single Workout popup =======
         background = findViewById(R.id.background);
         // =======================================
     }
@@ -496,27 +582,6 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
         }
 
         return valid;
-    }
-
-    public void justifyListViewHeightBasedOnChildren (ListView listView) {
-
-        ListAdapter adapter = listView.getAdapter();
-
-        if (adapter == null) {
-            return;
-        }
-        ViewGroup vg = listView;
-        int totalHeight = 0;
-        for (int i = 0; i < adapter.getCount(); i++) {
-            View listItem = adapter.getView(i, null, vg);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams par = listView.getLayoutParams();
-        par.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
-        listView.setLayoutParams(par);
-        listView.requestLayout();
     }
 
     @Override

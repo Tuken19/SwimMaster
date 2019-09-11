@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import static com.example.swimmaster.TrainingLogActivity.W_KEY;
 
@@ -38,7 +40,15 @@ public class SingleWorkoutInfoActivity extends AppCompatActivity {
     TextView nameField;
     TextView dateField;
 
-    FloatingActionButton addTasks;
+    ListView listViewWarmUpTask;
+    ListView listViewMainSetTask;
+    ListView listViewCooldownTask;
+    ArrayList<Task> warmUpTaskArray;
+    ArrayList<Task> mainSetTaskArray;
+    ArrayList<Task> cooldownTaskArray;
+    TaskAdapter arrayAdapterWarmUpTask;
+    TaskAdapter arrayAdapterMainSetTask;
+    TaskAdapter arrayAdapterCooldownTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +60,50 @@ public class SingleWorkoutInfoActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initializeFields();
+
+        warmUpTaskArray = new ArrayList<Task>();
+        arrayAdapterWarmUpTask = new TaskAdapter(SingleWorkoutInfoActivity.this, warmUpTaskArray);
+        listViewWarmUpTask.setAdapter(arrayAdapterWarmUpTask);
+
+        mainSetTaskArray = new ArrayList<Task>();
+        arrayAdapterMainSetTask = new TaskAdapter(SingleWorkoutInfoActivity.this, mainSetTaskArray);
+        listViewMainSetTask.setAdapter(arrayAdapterMainSetTask);
+
+        cooldownTaskArray = new ArrayList<Task>();
+        arrayAdapterCooldownTask = new TaskAdapter(SingleWorkoutInfoActivity.this, cooldownTaskArray);
+        listViewCooldownTask.setAdapter(arrayAdapterCooldownTask);
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long pos = -1;
+                String creationDate = "";
                 Bundle extras = getIntent().getExtras();
                 if (extras != null) {
-                    pos = extras.getLong(W_KEY);
+                    creationDate = extras.getString(W_KEY);
                 }
 
                 for (DataSnapshot element : dataSnapshot.getChildren()) {
                     SingleWorkout singleWorkout = element.getValue(SingleWorkout.class);
-                    if(singleWorkout.getPosition() == pos){
+                    if(singleWorkout.getCreationdate().equals(creationDate)){
                         currentSingleWorkout = singleWorkout;
                         nameField.setText(currentSingleWorkout.getName());
                         dateField.setText(currentSingleWorkout.getDate());
+
+                        warmUpTaskArray.clear();
+                        for (Task task : currentSingleWorkout.getWarmUp()) {
+                            warmUpTaskArray.add(task);
+                            arrayAdapterWarmUpTask.notifyDataSetChanged();
+                        }
+                        mainSetTaskArray.clear();
+                        for (Task task : currentSingleWorkout.getMainSet()) {
+                            mainSetTaskArray.add(task);
+                            arrayAdapterMainSetTask.notifyDataSetChanged();
+                        }
+                        cooldownTaskArray.clear();
+                        for (Task task : currentSingleWorkout.getCooldown()) {
+                            cooldownTaskArray.add(task);
+                            arrayAdapterCooldownTask.notifyDataSetChanged();
+                        }
                     }
                 }
             }
@@ -88,11 +127,13 @@ public class SingleWorkoutInfoActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mFBUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("SingleWorkouts");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("TrainingLog");
 
         nameField = findViewById(R.id.name_field);
         dateField = findViewById(R.id.date_field);
 
-        addTasks = findViewById(R.id.add_tasks);
+        listViewWarmUpTask = findViewById(R.id.list_view_warm_up);
+        listViewMainSetTask = findViewById(R.id.list_view_main_set);
+        listViewCooldownTask = findViewById(R.id.list_view_cooldown);
     }
 }

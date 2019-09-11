@@ -16,7 +16,7 @@
         android:textAlignment="gravity" />
 
     <ListView
-        android:id="@+id/list_view_single_workout"
+        android:id="@+id/list_view_single_workouts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="88dp"

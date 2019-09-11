@@ -6,193 +6,147 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="12dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
+        android:layout_marginEnd="12dp">
 
         <TextView
             android:id="@+id/category"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_marginTop="8dp"
+            android:paddingEnd="64dp"
             android:text="@string/category" />
 
         <Spinner
             android:id="@+id/spinner_category"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="7">
+            android:layout_toEndOf="@+id/category">
 
         </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="12dp"
-        android:orientation="horizontal"
-        android:weightSum="3">
 
         <TextView
             android:id="@+id/styles"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_below="@+id/spinner_category"
+            android:layout_marginTop="8dp"
             android:text="@string/strokes" />
 
         <Spinner
             android:id="@+id/spinner_styles"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_below="@+id/spinner_category"
+            android:layout_alignStart="@+id/spinner_category">
 
         </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:orientation="horizontal"
-        android:weightSum="14">
 
         <TextView
             android:id="@+id/repetitions"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_below="@+id/spinner_styles"
+            android:layout_marginTop="12dp"
             android:text="@string/repetitions" />
 
         <EditText
             android:id="@+id/edit_repetitions"
             style="@style/text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="11"
+            android:layout_below="@+id/spinner_styles"
+            android:layout_alignStart="@+id/spinner_styles"
             android:hint="@string/repetitions_hint"
             android:inputType="number"
             android:textAlignment="center">
 
         </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:orientation="horizontal"
-        android:weightSum="11">
 
         <TextView
             android:id="@+id/distance"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_below="@+id/edit_repetitions"
+            android:layout_marginTop="16dp"
             android:text="@string/distance" />
 
         <Spinner
             android:id="@+id/spinner_distance"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8">
+            android:layout_below="@+id/edit_repetitions"
+            android:layout_alignStart="@+id/edit_repetitions"
+            android:layout_marginTop="8dp">
 
         </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:orientation="horizontal"
-        android:weightSum="3">
 
         <TextView
             android:id="@+id/type"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_below="@+id/spinner_distance"
+            android:layout_marginTop="8dp"
             android:text="@string/type" />
 
         <Spinner
             android:id="@+id/spinner_type"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2">
+            android:layout_below="@+id/spinner_distance"
+            android:layout_alignStart="@+id/spinner_distance">
 
         </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
 
         <TextView
             android:id="@+id/pace"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_below="@+id/spinner_type"
+            android:layout_marginTop="8dp"
             android:text="@string/pace" />
 
         <Spinner
             android:id="@+id/spinner_pace"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="7">
+            android:layout_below="@+id/spinner_type"
+            android:layout_alignStart="@+id/spinner_type">
 
         </Spinner>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
 
         <TextView
             android:id="@+id/rest"
             style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_below="@+id/spinner_pace"
+            android:layout_marginTop="12dp"
             android:text="@string/rest" />
 
         <EditText
             android:id="@+id/edit_rest"
             style="@style/text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
+            android:layout_below="@+id/spinner_pace"
+            android:layout_alignStart="@+id/spinner_pace"
             android:hint="@string/rest_hint"
             android:inputType="number"
             android:textAlignment="center">
 
         </EditText>
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/additions"
