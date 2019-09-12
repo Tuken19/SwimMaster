@@ -1,10 +1,13 @@
 package com.example.swimmaster;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +29,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,6 +46,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.AlertDialog.Builder;
 import static com.example.swimmaster.MainMenuActivity.mWorkoutsList;
 
 public class SingleWorkoutActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -48,9 +54,6 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
     private final static String TAG = "SingleWorkoutActivity";
     private DatabaseReference mDatabase;
     private DatabaseReference logDatabase;
-    private long maxWarmUpId = 0;
-    private long maxMainSetId = 0;
-    private long maxCooldownId = 0;
     private FirebaseAuth mAuth;
     private FirebaseUser mFBUser;
 
@@ -107,13 +110,15 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
 
         initializeFields();
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        logDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    maxWarmUpId = dataSnapshot.child("WarmUp").getChildrenCount();
-                    maxMainSetId = dataSnapshot.child("MainSet").getChildrenCount();
-                    maxCooldownId = dataSnapshot.child("Cooldown").getChildrenCount();
+                if(dataSnapshot.exists()) {
+                    mWorkoutsList.clear();
+                    for (DataSnapshot element : dataSnapshot.getChildren()) {
+                        SingleWorkout singleWorkout = element.getValue(SingleWorkout.class);
+                        mWorkoutsList.add(singleWorkout);
+                    }
                 }
             }
 
@@ -336,21 +341,21 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                                 Task task;
 
                                 if(category.equals("Warm-up")) {
-                                    String position = String.valueOf(maxWarmUpId);
-                                    task = new Task(maxWarmUpId, style, distance, type, pace, repetitions, rest, additions);
-                                    mDatabase.child("WarmUp").child(position).setValue(task);
+                                    task = new Task(style, distance, type, pace, repetitions, rest, additions);
+                                    warmUpTaskArray.add(task);
+                                    mDatabase.child("WarmUp").setValue(warmUpTaskArray);
                                     arrayAdapterWarmUpTask.notifyDataSetChanged();
                                 }
                                 else if(category.equals("Main set")) {
-                                    String position = String.valueOf(maxMainSetId);
-                                    task = new Task(maxMainSetId, style, distance, type, pace, repetitions, rest, additions);
-                                    mDatabase.child("MainSet").child(position).setValue(task);
+                                    task = new Task(style, distance, type, pace, repetitions, rest, additions);
+                                    mainSetTaskArray.add(task);
+                                    mDatabase.child("MainSet").setValue(mainSetTaskArray);
                                     arrayAdapterMainSetTask.notifyDataSetChanged();
                                 }
                                 else if(category.equals("Cooldown")) {
-                                    String position = String.valueOf(maxCooldownId);
-                                    task = new Task(maxCooldownId, style, distance, type, pace, repetitions, rest, additions);
-                                    mDatabase.child("Cooldown").child(position).setValue(task);
+                                    task = new Task(style, distance, type, pace, repetitions, rest, additions);
+                                    cooldownTaskArray.add(task);
+                                    mDatabase.child("Cooldown").setValue(cooldownTaskArray);
                                     arrayAdapterCooldownTask.notifyDataSetChanged();
                                 }
 
@@ -366,6 +371,157 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
         }
         // =============================================
 
+        // =============== Deleting tasks ==============
+        // ===== WarmUp =====
+        listViewWarmUpTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                final Builder alertDialogBuilder = new Builder(SingleWorkoutActivity.this);
+                alertDialogBuilder
+                        .setTitle("Do you want to delete this item?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Task task = warmUpTaskArray.get(position);
+                                for (Task t : warmUpTaskArray) {
+                                    if (t.getStyle().equals(task.getStyle()) && t.getDistance().equals(task.getDistance())
+                                        && t.getRepetitions() == t.getRepetitions() && t.getPace().equals(task.getPace())
+                                        && t.getRest() == task.getRest() && t.getAdditions().equals(task.getAdditions())) {
+                                        task = t;
+                                    }
+                                }
+                                warmUpTaskArray.remove(task);
+                                String msg = "Style: " + task.getStyle() + " Distance: " + task.getDistance();
+                                Log.e(TAG, msg);
+
+                                mDatabase.child("WarmUp").setValue(warmUpTaskArray)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                arrayAdapterWarmUpTask.notifyDataSetChanged();
+                                                Toast.makeText(SingleWorkoutActivity.this, "You have successfully deleted an item.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(SingleWorkoutActivity.this, "Deletion failed. Try again.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
+
+        // ===== Main Set =====
+        listViewMainSetTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                final Builder alertDialogBuilder = new Builder(SingleWorkoutActivity.this);
+                alertDialogBuilder
+                        .setTitle("Do you want to delete this item?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Task task = mainSetTaskArray.get(position);
+                                for (Task t : mainSetTaskArray) {
+                                    if (t.getStyle().equals(task.getStyle()) && t.getDistance().equals(task.getDistance())
+                                            && t.getRepetitions() == t.getRepetitions() && t.getPace().equals(task.getPace())
+                                            && t.getRest() == task.getRest() && t.getAdditions().equals(task.getAdditions())) {
+                                        task = t;
+                                    }
+                                }
+                                mainSetTaskArray.remove(task);
+                                String msg = "Style: " + task.getStyle() + " Distance: " + task.getDistance();
+                                Log.e(TAG, msg);
+
+                                mDatabase.child("MainSet").setValue(mainSetTaskArray)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                arrayAdapterMainSetTask.notifyDataSetChanged();
+                                                Toast.makeText(SingleWorkoutActivity.this, "You have successfully deleted an item.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(SingleWorkoutActivity.this, "Deletion failed. Try again.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
+
+        // ===== Cooldown =====
+        listViewCooldownTask.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                final Builder alertDialogBuilder = new Builder(SingleWorkoutActivity.this);
+                alertDialogBuilder
+                        .setTitle("Do you want to delete this item?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Task task = cooldownTaskArray.get(position);
+                                for (Task t : cooldownTaskArray) {
+                                    if (t.getStyle().equals(task.getStyle()) && t.getDistance().equals(task.getDistance())
+                                            && t.getRepetitions() == t.getRepetitions() && t.getPace().equals(task.getPace())
+                                            && t.getRest() == task.getRest() && t.getAdditions().equals(task.getAdditions())) {
+                                        task = t;
+                                    }
+                                }
+                                cooldownTaskArray.remove(task);
+                                String msg = "Style: " + task.getStyle() + " Distance: " + task.getDistance();
+                                Log.e(TAG, msg);
+
+                                mDatabase.child("Cooldown").setValue(cooldownTaskArray)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                arrayAdapterCooldownTask.notifyDataSetChanged();
+                                                Toast.makeText(SingleWorkoutActivity.this, "You have successfully deleted an item.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(SingleWorkoutActivity.this, "Deletion failed. Try again.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
+        // =============================================
 
         // ========= Log Single Workout ================
         logButton.setOnClickListener(new View.OnClickListener() {

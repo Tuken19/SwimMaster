@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
-    private long mPosition;
     private String mStyle;
     private String mDistance;
     private String mType;
@@ -17,8 +16,7 @@ public class Task {
 
     }
 
-    Task(long position, String style, String distance, String type, String pace, int repetitions, int rest, List<String> additions){
-        mPosition = position;
+    Task(String style, String distance, String type, String pace, int repetitions, int rest, List<String> additions){
         mStyle = style;
         mDistance = distance;
         mType = type;
@@ -29,10 +27,6 @@ public class Task {
     }
 
     // ===== Getters =====
-    public long getPosition() {
-        return mPosition;
-    }
-
     public String getStyle() {
         return mStyle;
     }
@@ -63,10 +57,6 @@ public class Task {
     // ===================
 
     // ===== Setters =====
-    public void setPosition(int position) {
-        this.mPosition = position;
-    }
-
     public void setStyle(String mStyle) {
         this.mStyle = mStyle;
     }

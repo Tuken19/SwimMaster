@@ -85,17 +85,16 @@ public class TrainingLogActivity extends AppCompatActivity {
 
         // ========== List view with workouts ==========
         {
-            arraySingleWorkout = new ArrayList<SingleWorkout>();
-            arrayAdapterSingleWorkouts = new SingleWorkoutAdapter(this, arraySingleWorkout);
+            arrayAdapterSingleWorkouts = new SingleWorkoutAdapter(this, (ArrayList<SingleWorkout>) mWorkoutsList);
             listViewSingleWorkouts.setAdapter(arrayAdapterSingleWorkouts);
 
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    arraySingleWorkout.clear();
+                    mWorkoutsList.clear();
                     for (DataSnapshot element : dataSnapshot.getChildren()) {
                         SingleWorkout singleWorkout = element.getValue(SingleWorkout.class);
-                        arraySingleWorkout.add(singleWorkout);
+                        mWorkoutsList.add(singleWorkout);
                         arrayAdapterSingleWorkouts.notifyDataSetChanged();
                     }
                 }
@@ -113,7 +112,7 @@ public class TrainingLogActivity extends AppCompatActivity {
             listViewSingleWorkouts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    SingleWorkout selectedSW = arraySingleWorkout.get(position);
+                    SingleWorkout selectedSW = mWorkoutsList.get(position);
                     String creationDate = selectedSW.getCreationdate();
 
                     String transitionName = getString(R.string.name_anim);
@@ -148,7 +147,7 @@ public class TrainingLogActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 SingleWorkout workout = arraySingleWorkout.get(position);
                                 for (SingleWorkout w : mWorkoutsList) {
-                                    if (w.getCreationdate().equals(workout.getCreationdate())) {
+                                    if (w.getName().equals(workout.getName()) && w.getCreationdate().equals(workout.getCreationdate())) {
                                         workout = w;
                                     }
                                 }

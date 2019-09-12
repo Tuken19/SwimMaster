@@ -150,4 +150,7 @@
     <string name="add">Add</string>
 
 
+    <!--Training Plan Activity-->
+    <string name="generate">Generate</string>
 </resources>
+
