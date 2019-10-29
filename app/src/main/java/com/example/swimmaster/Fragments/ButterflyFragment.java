@@ -1,4 +1,4 @@
-package com.example.swimmaster;
+package com.example.swimmaster.Fragments;
 
 
 import android.content.DialogInterface;
@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.example.swimmaster.R;
+import com.example.swimmaster.Time;
+import com.example.swimmaster.TimesAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,9 +36,9 @@ import java.util.Collections;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BreaststrokeFragment extends Fragment {
+public class ButterflyFragment extends Fragment {
 
-    private final static String TAG = "BreaststrokeFragment";
+    private final static String TAG = "ButterflyFragment";
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseUser mFBUser;
@@ -44,7 +47,7 @@ public class BreaststrokeFragment extends Fragment {
     TimesAdapter arrayAdapterTimes;
     ArrayList<Time> arrayTimes;
 
-    public BreaststrokeFragment() {
+    public ButterflyFragment() {
         // Required empty public constructor
     }
 
@@ -53,11 +56,11 @@ public class BreaststrokeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_breaststroke, container, false);
+        View view = inflater.inflate(R.layout.fragment_butterfly, container, false);
 
         TextView titleForFragments = view.findViewById(R.id.titleForFragments);
         String text = getResources().getString(R.string.title_for_fragments);
-        String styleName = getResources().getString(R.string.breaststroke);
+        String styleName = getResources().getString(R.string.butterfly);
         titleForFragments.setText(String.format(text, styleName));
 
         mAuth = FirebaseAuth.getInstance();
@@ -65,7 +68,7 @@ public class BreaststrokeFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("Times");
 
 
-        listViewTimes = view.findViewById(R.id.list_view_breaststroke);
+        listViewTimes = view.findViewById(R.id.list_view_butterfly);
         arrayTimes = new ArrayList<>();
         arrayAdapterTimes = new TimesAdapter(getContext(), arrayTimes);
         listViewTimes.setAdapter(arrayAdapterTimes);
@@ -77,7 +80,7 @@ public class BreaststrokeFragment extends Fragment {
                 arrayTimes.clear();
                 for(DataSnapshot element : dataSnapshot.getChildren()) {
                     Time time = element.getValue(Time.class);
-                    if (time.getStyle().equals("Breaststroke")) {
+                    if (time.getStyle().equals("Butterfly")) {
                         arrayTimes.add(time);
                         arrayAdapterTimes.notifyDataSetChanged();
                     }

@@ -16,7 +16,7 @@ public class Task {
 
     }
 
-    Task(String style, String distance, String type, String pace, int repetitions, int rest, List<String> additions){
+    public Task(String style, String distance, String type, String pace, int repetitions, int rest, List<String> additions){
         mStyle = style;
         mDistance = distance;
         mType = type;

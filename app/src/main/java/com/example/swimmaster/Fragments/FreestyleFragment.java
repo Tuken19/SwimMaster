@@ -1,4 +1,4 @@
-package com.example.swimmaster;
+package com.example.swimmaster.Fragments;
 
 
 import android.content.DialogInterface;
@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.example.swimmaster.R;
+import com.example.swimmaster.Time;
+import com.example.swimmaster.TimesAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +36,7 @@ import java.util.Collections;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BackstrokeFragment extends Fragment {
+public class FreestyleFragment extends Fragment {
 
     private final static String TAG = "ButterflyFragment";
     private DatabaseReference mDatabase;
@@ -44,7 +47,7 @@ public class BackstrokeFragment extends Fragment {
     TimesAdapter arrayAdapterTimes;
     ArrayList<Time> arrayTimes;
 
-    public BackstrokeFragment() {
+    public FreestyleFragment() {
         // Required empty public constructor
     }
 
@@ -53,11 +56,11 @@ public class BackstrokeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_backstroke, container, false);
+        View view = inflater.inflate(R.layout.fragment_freestyle, container, false);
 
         TextView titleForFragments = view.findViewById(R.id.titleForFragments);
         String text = getResources().getString(R.string.title_for_fragments);
-        String styleName = getResources().getString(R.string.backstroke);
+        String styleName = getResources().getString(R.string.freestyle);
         titleForFragments.setText(String.format(text, styleName));
 
         mAuth = FirebaseAuth.getInstance();
@@ -65,7 +68,7 @@ public class BackstrokeFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("Times");
 
 
-        listViewTimes = view.findViewById(R.id.list_view_backstroke);
+        listViewTimes = view.findViewById(R.id.list_view_freestyle);
         arrayTimes = new ArrayList<>();
         arrayAdapterTimes = new TimesAdapter(getContext(), arrayTimes);
         listViewTimes.setAdapter(arrayAdapterTimes);
@@ -77,7 +80,7 @@ public class BackstrokeFragment extends Fragment {
                 arrayTimes.clear();
                 for (DataSnapshot element : dataSnapshot.getChildren()) {
                     Time time = element.getValue(Time.class);
-                    if (time.getStyle().equals("Backstroke")) {
+                    if (time.getStyle().equals("Freestyle")) {
                         arrayTimes.add(time);
                         arrayAdapterTimes.notifyDataSetChanged();
                     }

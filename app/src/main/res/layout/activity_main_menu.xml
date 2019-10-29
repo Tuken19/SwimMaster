@@ -54,7 +54,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/single_workout" />
+            android:text="@string/single_workout_description"
+            android:maxWidth="220dp"/>
     </RelativeLayout>
 
     <!--Training Plan-->
@@ -92,7 +93,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/training_plan" />
+            android:text="@string/training_plan_description"
+            android:maxWidth="220dp"/>
     </RelativeLayout>
 
     <!--Training Log-->
@@ -130,7 +132,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/training_log" />
+            android:text="@string/training_log_description"
+            android:maxWidth="220dp"/>
     </RelativeLayout>
 
     <!--TimesLogActivity Log-->
@@ -168,7 +171,16 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/times_log" />
+            android:text="@string/times_log_description"
+            android:maxWidth="220dp"/>
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_background"
+        android:padding="120dp"
+        android:visibility="invisible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

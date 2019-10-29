@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.swimmaster.BackstrokeFragment;
-import com.example.swimmaster.BreaststrokeFragment;
-import com.example.swimmaster.ButterflyFragment;
-import com.example.swimmaster.FreestyleFragment;
-import com.example.swimmaster.MedleyFragment;
+import com.example.swimmaster.Fragments.BackstrokeFragment;
+import com.example.swimmaster.Fragments.BreaststrokeFragment;
+import com.example.swimmaster.Fragments.ButterflyFragment;
+import com.example.swimmaster.Fragments.FreestyleFragment;
+import com.example.swimmaster.Fragments.MedleyFragment;
 import com.example.swimmaster.R;
 
 /**

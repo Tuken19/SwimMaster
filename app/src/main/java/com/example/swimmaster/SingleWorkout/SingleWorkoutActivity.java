@@ -1,4 +1,4 @@
-package com.example.swimmaster;
+package com.example.swimmaster.SingleWorkout;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -29,6 +29,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.swimmaster.ProfileActivity;
+import com.example.swimmaster.R;
+import com.example.swimmaster.Task;
+import com.example.swimmaster.TaskAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

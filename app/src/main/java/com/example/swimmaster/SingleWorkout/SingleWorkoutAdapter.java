@@ -1,4 +1,4 @@
-package com.example.swimmaster;
+package com.example.swimmaster.SingleWorkout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.swimmaster.R;
+import com.example.swimmaster.SingleWorkout.SingleWorkout;
 
 import java.util.ArrayList;
 import java.util.List;

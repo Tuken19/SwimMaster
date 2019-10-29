@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/custom_popup_background"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="vertical">
+
+            <!--Which days-->
+            <TextView
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/days" />
+
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:alignmentMode="alignBounds"
+                android:columnCount="7"
+                android:orientation="horizontal"
+                android:rowOrderPreserved="false"
+                android:useDefaultMargins="true">
+
+                <RelativeLayout
+                    android:id="@+id/r_monday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/monday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/mon"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/monday"
+                        android:layout_centerHorizontal="true"
+                        android:text="Mon" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_tuesday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/tuesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/tue"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tuesday"
+                        android:layout_centerHorizontal="true"
+                        android:text="Tue" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_wednesday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/wednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/wed"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/wednesday"
+                        android:layout_centerHorizontal="true"
+                        android:text="Wed" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_thursday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/thursday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/thu"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/thursday"
+                        android:layout_centerHorizontal="true"
+                        android:text="Thu" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_friday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/friday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/fri"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/friday"
+                        android:layout_centerHorizontal="true"
+                        android:text="Fri" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_saturday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/saturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/sat"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/saturday"
+                        android:layout_centerHorizontal="true"
+                        android:text="Sat" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_sunday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/sunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/sun"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sunday"
+                        android:layout_centerHorizontal="true"
+                        android:text="Sun" />
+                </RelativeLayout>
+            </GridLayout>
+
+            <!--Weeks-->
+            <TextView
+                android:id="@+id/weeks"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/weeks" />
+
+            <EditText
+                android:id="@+id/edit_weeks"
+                style="@style/text"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:hint="@string/repetitions_hint"
+                android:inputType="number"
+                android:textAlignment="center" />
+
+            <!--Starting Distance-->
+            <TextView
+                android:id="@+id/distance"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/starting_distance" />
+
+            <EditText
+                android:id="@+id/edit_distance"
+                style="@style/text"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:hint="@string/repetitions_hint"
+                android:inputType="number"
+                android:textAlignment="center" />
+
+            <!--Additions-->
+            <TextView
+                android:id="@+id/additions"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/additions" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="2"
+                android:columnOrderPreserved="false"
+                android:orientation="vertical"
+                android:rowCount="3"
+                android:weightSum="10">
+
+                <CheckBox
+                    android:id="@+id/legs"
+                    style="@style/text"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:buttonTint="@color/accent"
+                    android:text="@string/legs" />
+
+                <CheckBox
+                    android:id="@+id/kick"
+                    style="@style/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:buttonTint="@color/accent"
+                    android:text="@string/kick_board" />
+
+                <CheckBox
+                    android:id="@+id/fins"
+                    style="@style/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:buttonTint="@color/accent"
+                    android:text="@string/fins" />
+
+                <CheckBox
+                    android:id="@+id/arms"
+                    style="@style/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:buttonTint="@color/accent"
+                    android:text="@string/arms" />
+
+                <CheckBox
+                    android:id="@+id/buoy"
+                    style="@style/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:buttonTint="@color/accent"
+                    android:text="@string/pull_buoy" />
+
+                <CheckBox
+                    android:id="@+id/paddles"
+                    style="@style/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:buttonTint="@color/accent"
+                    android:text="@string/paddles" />
+            </GridLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/generate"
+        style="@style/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="32dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/generate" />
+
+</LinearLayout>

@@ -1,29 +1,31 @@
-package com.example.swimmaster;
+package com.example.swimmaster.SingleWorkout;
+
+import com.example.swimmaster.Task;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class SingleWorkout implements Comparable<SingleWorkout> {
+public class SingleWorkout implements SingleWorkoutBuilder, Comparable<SingleWorkout> {
     private String mName;
     private String mDate;
     private List<Task> mWarmUp = new ArrayList<>();
     private List<Task> mMainSet = new ArrayList<>();
     private List<Task> mCooldown = new ArrayList<>();
 
-    private String mCreationdate;
+    private String mCreationDate;
 
     SingleWorkout() {
 
     }
 
-    SingleWorkout(String name, String date, List<Task> warmUp, List<Task> mainSet, List<Task> cooldown, String creationdate) {
+    SingleWorkout(String name, String date, List<Task> warmUp, List<Task> mainSet, List<Task> cooldown, String creationDate) {
         mName = name;
         mDate = date;
         mWarmUp = warmUp;
         mMainSet = mainSet;
         mCooldown = cooldown;
-        mCreationdate = creationdate;
+        mCreationDate = creationDate;
     }
 
     // ========== Getters ==========
@@ -48,33 +50,49 @@ public class SingleWorkout implements Comparable<SingleWorkout> {
     }
 
     public String getCreationdate() {
-        return mCreationdate;
+        return mCreationDate;
     }
     // =============================
 
     // ========== Setters ==========
+    @Override
+    public void resetSingleWorkout() {
+
+    }
+
+    @Override
     public void setName(String name) {
         this.mName = name;
     }
 
+    @Override
     public void setDate(String date) {
         this.mDate = date;
     }
 
+    @Override
     public void setWarmUp(List<Task> warmUp) {
         mWarmUp = warmUp;
     }
 
+    @Override
     public void setMainSet(List<Task> mainSet) {
         mMainSet = mainSet;
     }
 
+    @Override
     public void setCooldown(List<Task> cooldown) {
         mCooldown = cooldown;
     }
 
-    public void setCreationdate(String creationdate) {
-        this.mCreationdate = creationdate;
+    @Override
+    public void setCreationdate(String creationDate) {
+        this.mCreationDate = creationDate;
+    }
+
+    @Override
+    public SingleWorkout build() {
+        return this;
     }
     // =============================
 

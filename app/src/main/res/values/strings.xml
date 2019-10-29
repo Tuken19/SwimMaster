@@ -22,6 +22,11 @@
     <string name="training_log">Training Log</string>
     <string name="times_log">Times Log</string>
 
+    <string name="single_workout_description">Here you can customise your Single Workout.</string>
+    <string name="training_plan_description">Here you can generate new Training Plan or check existing one.</string>
+    <string name="training_log_description">Here you can see what trainings you have done.</string>
+    <string name="times_log_description">Here you can check your times in particular strokes and add new.</string>
+
     <!--Profile Activity-->
     <string name="height">Height:</string>
     <string name="weight">Weight:</string>
@@ -152,5 +157,10 @@
 
     <!--Training Plan Activity-->
     <string name="generate">Generate</string>
+
+    <!--Generate Training Popup-->
+    <string name="days">Which days would you like to swim?</string>
+    <string name="weeks">How many weeks would you like to train?</string>
+    <string name="starting_distance">What is your starting distance?</string>
 </resources>
 

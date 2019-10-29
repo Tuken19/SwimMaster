@@ -15,12 +15,18 @@
         android:background="@drawable/custom_background"
         android:textAlignment="gravity" />
 
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/generate_training">
+        android:layout_above="@+id/generate_training"
+        app:mcv_headerTextAppearance="@style/basic_text"
+        app:mcv_dateTextAppearance="@style/text"
+        app:mcv_weekDayTextAppearance="@style/text"
+        app:mcv_showOtherDates="all"
+        app:mcv_selectionColor="@color/accent">
 
-    </CalendarView>
+    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
     <Button
         android:id="@+id/generate_training"
