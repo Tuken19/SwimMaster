@@ -11,15 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.swimmaster.R;
-import com.example.swimmaster.SingleWorkout.SingleWorkout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SingleWorkoutAdapter extends ArrayAdapter<SingleWorkout> {
 
     private Context mContext;
-    private List<SingleWorkout> mSingleWorkoutList = new ArrayList<>();
+    private ArrayList<SingleWorkout> mSingleWorkoutList = new ArrayList<>();
 
     public SingleWorkoutAdapter(@NonNull Context context, @NonNull ArrayList<SingleWorkout> list) {
         super(context, 0, list);

@@ -25,12 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -39,13 +35,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.example.swimmaster.MainMenuActivity.mDatabaseTimes;
+
 public class TimerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private final static String TAG = "TimerActivity";
-    private DatabaseReference mDatabase;
     private long maxId = 0;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mFBUser;
 
     ActionBar actionBar;
     ImageButton profileButton;
@@ -100,7 +95,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
 
         initializeFields();
 
-        mDatabase.child("users").child(mFBUser.getUid()).child("Times").addValueEventListener(new ValueEventListener() {
+        mDatabaseTimes.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -230,7 +225,7 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
                     time.setDate(sdf.format(date));
 
-                    mDatabase.child("users").child(mFBUser.getUid()).child("Times").child(String.valueOf(maxId)).setValue(time)
+                    mDatabaseTimes.child(String.valueOf(maxId)).setValue(time)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -261,10 +256,6 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         // =======================================
 
         profileButton = findViewById(R.id.profile);
-
-        mAuth = FirebaseAuth.getInstance();
-        mFBUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         shortPool = findViewById(R.id.shortPool);
         longPool = findViewById(R.id.longPool);

@@ -8,9 +8,10 @@ public interface SingleWorkoutBuilder {
     public void resetSingleWorkout();
     public void setName(String name);
     public void setDate(String date);
+    public void setListName(String listName);
     public void setWarmUp(List<Task> warmUp);
     public void setMainSet(List<Task> mainSet);
     public void setCooldown(List<Task> cooldown);
-    public void setCreationdate(String creationDate);
+    public void setCreationDate(String creationDate);
     public SingleWorkout build();
 }

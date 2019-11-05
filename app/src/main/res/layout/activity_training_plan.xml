@@ -15,16 +15,30 @@
         android:background="@drawable/custom_background"
         android:textAlignment="gravity" />
 
+    <ListView
+        android:id="@+id/list_of_trainings_in_a_day"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:focusable="true"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp">
+
+    </ListView>
+
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_of_trainings_in_a_day"
         android:layout_above="@+id/generate_training"
-        app:mcv_headerTextAppearance="@style/basic_text"
+        android:layout_marginBottom="16dp"
         app:mcv_dateTextAppearance="@style/text"
-        app:mcv_weekDayTextAppearance="@style/text"
+        app:mcv_headerTextAppearance="@style/basic_text"
+        app:mcv_selectionColor="@color/accent"
         app:mcv_showOtherDates="all"
-        app:mcv_selectionColor="@color/accent">
+        app:mcv_weekDayTextAppearance="@style/text">
+
 
     </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
@@ -38,7 +52,7 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
         android:background="@drawable/custom_button"
-        android:visibility="visible"
-        android:text="@string/generate" />
+        android:text="@string/generate"
+        android:visibility="visible" />
 
 </RelativeLayout>

@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -38,6 +39,13 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,15 +57,24 @@ import static com.example.swimmaster.MainMenuActivity.MakeCalendarTask.MAKE_CALE
 
 public class MainMenuActivity extends AppCompatActivity {
     private final static String TAG = "MainMenuActivity";
+
+    public static FirebaseAuth mAuth;
+    public static FirebaseUser mFBUser;
+    public static DatabaseReference mDatabaseHome;
+    public static DatabaseReference mDatabaseSingleWorkout;
+    public static DatabaseReference mDatabaseTrainingPlan;
+    public static DatabaseReference mDatabaseTrainingLog;
+    public static DatabaseReference mDatabaseTimes;
+
     private static final int MY_PERMISSIONS_REQUEST_CALENDAR = 0;
     private static final int RC_AUTHORIZE_CALENDAR = 10;
-    private final String CALENDAR_NAME = "SwimMaster";
-    private final String SCOPE = "https://www.googleapis.com/auth/calendar";
+    public final static String CALENDAR_NAME = "SwimMaster";
+    public final static String SCOPE = "https://www.googleapis.com/auth/calendar";
 
     // Global instance of the HTTP transport.
-    HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
+    public final static HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
     //Global instance of the JSON factory.
-    final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    public final static JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     ActionBar actionBar;
     ImageButton profileButton;
@@ -69,11 +86,15 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public static GoogleSignInClient mGoogleSignInClient;
     public static List<SingleWorkout> mWorkoutsList = new ArrayList<>();
+    public static final String mWorkoutsListName = "WorkoutList";
+    public static List<SingleWorkout> mTrainingSetWorkoutsList = new ArrayList<>();
+    public static final String mTrainingSetWorkoutsListName = "TrainingSetWorkoutsList";
 
     public static String personName;
     public static String personEmail;
     public static String personId;
     public static Uri personPhoto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +105,7 @@ public class MainMenuActivity extends AppCompatActivity {
         permissionsForCalendar();
         // ===========================================================
 
+        // =========== Initialisation ============
         initializeFields();
         // =======================================
 
@@ -154,6 +176,46 @@ public class MainMenuActivity extends AppCompatActivity {
         });
         // ===================
         // ==============================================
+
+        // =========== Training Set Workouts ===========
+        {
+            mDatabaseTrainingPlan.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    mTrainingSetWorkoutsList.clear();
+                    for (DataSnapshot element : dataSnapshot.getChildren()) {
+                        SingleWorkout singleWorkout = element.getValue(SingleWorkout.class);
+                        mTrainingSetWorkoutsList.add(singleWorkout);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        // =============================================
+
+        // ============== Logged Workouts ==============
+        {
+            mDatabaseTrainingLog.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    mWorkoutsList.clear();
+                    for (DataSnapshot element : dataSnapshot.getChildren()) {
+                        SingleWorkout singleWorkout = element.getValue(SingleWorkout.class);
+                        mWorkoutsList.add(singleWorkout);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        // =============================================
     }
 
     @Override
@@ -176,6 +238,16 @@ public class MainMenuActivity extends AppCompatActivity {
         trainingPlan = findViewById(R.id.TrainingPlan);
         trainingLog = findViewById(R.id.TrainingLog);
         timesLog = findViewById(R.id.TimesLog);
+
+        // ============== Firebase ===============
+        mAuth = FirebaseAuth.getInstance();
+        mFBUser = mAuth.getCurrentUser();
+        mDatabaseHome = FirebaseDatabase.getInstance().getReference();
+        mDatabaseSingleWorkout = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("SingleWorkout");
+        mDatabaseTrainingPlan = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("TrainingPlan");
+        mDatabaseTrainingLog = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("TrainingLog");
+        mDatabaseTimes = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("Times");
+        // =======================================
 
         // ========== Custom Action Bar ==========
         actionBar = getSupportActionBar();
@@ -249,8 +321,7 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-    //TODO: Dopisać
-
+    //TODO: Dopisać isDeviceOnline
     /**
      * Function which checks if device is connected to the network
      * @return true if connected

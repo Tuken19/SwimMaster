@@ -1,10 +1,13 @@
 package com.example.swimmaster.SingleWorkout;
 
+import android.accounts.Account;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,33 +36,43 @@ import com.example.swimmaster.ProfileActivity;
 import com.example.swimmaster.R;
 import com.example.swimmaster.Task;
 import com.example.swimmaster.TaskAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.CalendarList;
+import com.google.api.services.calendar.model.CalendarListEntry;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import static android.app.AlertDialog.Builder;
+import static com.example.swimmaster.MainMenuActivity.CALENDAR_NAME;
+import static com.example.swimmaster.MainMenuActivity.HTTP_TRANSPORT;
+import static com.example.swimmaster.MainMenuActivity.JSON_FACTORY;
+import static com.example.swimmaster.MainMenuActivity.SCOPE;
+import static com.example.swimmaster.MainMenuActivity.mDatabaseSingleWorkout;
+import static com.example.swimmaster.MainMenuActivity.mDatabaseTrainingLog;
 import static com.example.swimmaster.MainMenuActivity.mWorkoutsList;
+import static com.example.swimmaster.MainMenuActivity.mWorkoutsListName;
 
 public class SingleWorkoutActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private final static String TAG = "SingleWorkoutActivity";
-    private DatabaseReference mDatabase;
-    private DatabaseReference logDatabase;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mFBUser;
 
     ListView listViewWarmUpTask;
     ListView listViewMainSetTask;
@@ -114,10 +127,10 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
 
         initializeFields();
 
-        logDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabaseTrainingLog.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     mWorkoutsList.clear();
                     for (DataSnapshot element : dataSnapshot.getChildren()) {
                         SingleWorkout singleWorkout = element.getValue(SingleWorkout.class);
@@ -145,49 +158,49 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
         // ===================
 
         // ========== List views with tasks ==========
-            {
-                warmUpTaskArray = new ArrayList<Task>();
-                arrayAdapterWarmUpTask = new TaskAdapter(SingleWorkoutActivity.this, warmUpTaskArray);
-                listViewWarmUpTask.setAdapter(arrayAdapterWarmUpTask);
+        {
+            warmUpTaskArray = new ArrayList<Task>();
+            arrayAdapterWarmUpTask = new TaskAdapter(SingleWorkoutActivity.this, warmUpTaskArray);
+            listViewWarmUpTask.setAdapter(arrayAdapterWarmUpTask);
 
-                mainSetTaskArray = new ArrayList<Task>();
-                arrayAdapterMainSetTask = new TaskAdapter(SingleWorkoutActivity.this, mainSetTaskArray);
-                listViewMainSetTask.setAdapter(arrayAdapterMainSetTask);
+            mainSetTaskArray = new ArrayList<Task>();
+            arrayAdapterMainSetTask = new TaskAdapter(SingleWorkoutActivity.this, mainSetTaskArray);
+            listViewMainSetTask.setAdapter(arrayAdapterMainSetTask);
 
-                cooldownTaskArray = new ArrayList<Task>();
-                arrayAdapterCooldownTask = new TaskAdapter(SingleWorkoutActivity.this, cooldownTaskArray);
-                listViewCooldownTask.setAdapter(arrayAdapterCooldownTask);
+            cooldownTaskArray = new ArrayList<Task>();
+            arrayAdapterCooldownTask = new TaskAdapter(SingleWorkoutActivity.this, cooldownTaskArray);
+            listViewCooldownTask.setAdapter(arrayAdapterCooldownTask);
 
-                mDatabase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            warmUpTaskArray.clear();
-                            for (DataSnapshot element : dataSnapshot.child("WarmUp").getChildren()) {
-                                Task task = element.getValue(Task.class);
-                                warmUpTaskArray.add(task);
-                                arrayAdapterWarmUpTask.notifyDataSetChanged();
-                            }
-                            mainSetTaskArray.clear();
-                            for (DataSnapshot element : dataSnapshot.child("MainSet").getChildren()) {
-                                Task task = element.getValue(Task.class);
-                                mainSetTaskArray.add(task);
-                                arrayAdapterMainSetTask.notifyDataSetChanged();
-                            }
-                            cooldownTaskArray.clear();
-                            for (DataSnapshot element : dataSnapshot.child("Cooldown").getChildren()) {
-                                Task task = element.getValue(Task.class);
-                                cooldownTaskArray.add(task);
-                                arrayAdapterCooldownTask.notifyDataSetChanged();
-                            }
+            mDatabaseSingleWorkout.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    warmUpTaskArray.clear();
+                    for (DataSnapshot element : dataSnapshot.child("WarmUp").getChildren()) {
+                        Task task = element.getValue(Task.class);
+                        warmUpTaskArray.add(task);
+                        arrayAdapterWarmUpTask.notifyDataSetChanged();
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    mainSetTaskArray.clear();
+                    for (DataSnapshot element : dataSnapshot.child("MainSet").getChildren()) {
+                        Task task = element.getValue(Task.class);
+                        mainSetTaskArray.add(task);
+                        arrayAdapterMainSetTask.notifyDataSetChanged();
                     }
-                });
-            }
-            // =============================================
+                    cooldownTaskArray.clear();
+                    for (DataSnapshot element : dataSnapshot.child("Cooldown").getChildren()) {
+                        Task task = element.getValue(Task.class);
+                        cooldownTaskArray.add(task);
+                        arrayAdapterCooldownTask.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        // =============================================
 
         // ============= Date Picker =============
         {
@@ -205,10 +218,9 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                     editDate.setText(sdf.format(dateCalendar.getTime()));
 
                     editDate.setError(null);
-                    if(!TextUtils.isEmpty(editName.getText())){
+                    if (!TextUtils.isEmpty(editName.getText())) {
                         logButton.setEnabled(true);
-                    }
-                    else{
+                    } else {
                         editName.setError("Required.");
                     }
                 }
@@ -231,10 +243,9 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
             @Override
             public void onClick(View view) {
                 editName.setError(null);
-                if(!TextUtils.isEmpty(editDate.getText())){
+                if (!TextUtils.isEmpty(editDate.getText())) {
                     logButton.setEnabled(true);
-                }
-                else{
+                } else {
                     editDate.setError("Required.");
                 }
             }
@@ -313,7 +324,7 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                     addButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if(validateForm()){
+                            if (validateForm()) {
                                 String category = spinnerCategory.getSelectedItem().toString();
                                 String style = spinnerStyles.getSelectedItem().toString();
                                 String distance = spinnerDistance.getSelectedItem().toString();
@@ -323,43 +334,41 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                                 int rest = Integer.parseInt(editRest.getText().toString());
                                 List<String> additions = new ArrayList<>();
 
-                                if(legs.isChecked()){
+                                if (legs.isChecked()) {
                                     additions.add(legs.getText().toString());
                                 }
-                                if(kick.isChecked()){
+                                if (kick.isChecked()) {
                                     additions.add(kick.getText().toString());
                                 }
-                                if(fins.isChecked()){
+                                if (fins.isChecked()) {
                                     additions.add(fins.getText().toString());
                                 }
-                                if(arms.isChecked()){
+                                if (arms.isChecked()) {
                                     additions.add(arms.getText().toString());
                                 }
-                                if(buoy.isChecked()){
+                                if (buoy.isChecked()) {
                                     additions.add(buoy.getText().toString());
                                 }
-                                if(paddles.isChecked()){
+                                if (paddles.isChecked()) {
                                     additions.add(paddles.getText().toString());
                                 }
 
                                 Task task;
 
-                                if(category.equals("Warm-up")) {
+                                if (category.equals("Warm-up")) {
                                     task = new Task(style, distance, type, pace, repetitions, rest, additions);
                                     warmUpTaskArray.add(task);
-                                    mDatabase.child("WarmUp").setValue(warmUpTaskArray);
+                                    mDatabaseSingleWorkout.child("WarmUp").setValue(warmUpTaskArray);
                                     arrayAdapterWarmUpTask.notifyDataSetChanged();
-                                }
-                                else if(category.equals("Main set")) {
+                                } else if (category.equals("Main set")) {
                                     task = new Task(style, distance, type, pace, repetitions, rest, additions);
                                     mainSetTaskArray.add(task);
-                                    mDatabase.child("MainSet").setValue(mainSetTaskArray);
+                                    mDatabaseSingleWorkout.child("MainSet").setValue(mainSetTaskArray);
                                     arrayAdapterMainSetTask.notifyDataSetChanged();
-                                }
-                                else if(category.equals("Cooldown")) {
+                                } else if (category.equals("Cooldown")) {
                                     task = new Task(style, distance, type, pace, repetitions, rest, additions);
                                     cooldownTaskArray.add(task);
-                                    mDatabase.child("Cooldown").setValue(cooldownTaskArray);
+                                    mDatabaseSingleWorkout.child("Cooldown").setValue(cooldownTaskArray);
                                     arrayAdapterCooldownTask.notifyDataSetChanged();
                                 }
 
@@ -389,8 +398,8 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                                 Task task = warmUpTaskArray.get(position);
                                 for (Task t : warmUpTaskArray) {
                                     if (t.getStyle().equals(task.getStyle()) && t.getDistance().equals(task.getDistance())
-                                        && t.getRepetitions() == t.getRepetitions() && t.getPace().equals(task.getPace())
-                                        && t.getRest() == task.getRest() && t.getAdditions().equals(task.getAdditions())) {
+                                            && t.getRepetitions() == t.getRepetitions() && t.getPace().equals(task.getPace())
+                                            && t.getRest() == task.getRest() && t.getAdditions().equals(task.getAdditions())) {
                                         task = t;
                                     }
                                 }
@@ -398,7 +407,7 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                                 String msg = "Style: " + task.getStyle() + " Distance: " + task.getDistance();
                                 Log.e(TAG, msg);
 
-                                mDatabase.child("WarmUp").setValue(warmUpTaskArray)
+                                mDatabaseSingleWorkout.child("WarmUp").setValue(warmUpTaskArray)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
@@ -448,7 +457,7 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                                 String msg = "Style: " + task.getStyle() + " Distance: " + task.getDistance();
                                 Log.e(TAG, msg);
 
-                                mDatabase.child("MainSet").setValue(mainSetTaskArray)
+                                mDatabaseSingleWorkout.child("MainSet").setValue(mainSetTaskArray)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
@@ -498,7 +507,7 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                                 String msg = "Style: " + task.getStyle() + " Distance: " + task.getDistance();
                                 Log.e(TAG, msg);
 
-                                mDatabase.child("Cooldown").setValue(cooldownTaskArray)
+                                mDatabaseSingleWorkout.child("Cooldown").setValue(cooldownTaskArray)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
@@ -537,9 +546,27 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
                 String creation_date = sdf.format(Calendar.getInstance().getTime());
 
                 SingleWorkout customSingleWorkout = new SingleWorkout(name, editDate.getText().toString(), warmUpTaskArray, mainSetTaskArray, cooldownTaskArray, creation_date);
+                String date = customSingleWorkout.getDate();
+                int year = Integer.parseInt(date.substring(date.length()-4, date.length()));
+                int month = Integer.parseInt(date.substring(date.length()-7, date.length()-5));
+                int day = Integer.parseInt(date.substring(date.length()-10, date.length()-8));
+
+                String ceDate = year + "-";
+                if(month < 10){
+                    ceDate += "0";
+                }
+                ceDate += month + "-";
+                if(day < 10){
+                    ceDate += "0";
+                }
+                ceDate += day;
+
+                customSingleWorkout.setListName(mWorkoutsListName);
+
+                makeCalendarEntry(ceDate, customSingleWorkout.getName());
                 mWorkoutsList.add(customSingleWorkout);
-                logDatabase.setValue(mWorkoutsList);
-                mDatabase.removeValue();
+                mDatabaseTrainingLog.setValue(mWorkoutsList);
+                mDatabaseSingleWorkout.removeValue();
 
                 editName.clearFocus();
                 editDate.clearFocus();
@@ -670,11 +697,6 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
 
         profileButton = findViewById(R.id.profile);
 
-        mAuth = FirebaseAuth.getInstance();
-        mFBUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("SingleWorkout");
-        logDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("TrainingLog");
-
         listViewWarmUpTask = findViewById(R.id.list_view_warm_up);
         listViewMainSetTask = findViewById(R.id.list_view_main_set);
         listViewCooldownTask = findViewById(R.id.list_view_cooldown);
@@ -752,5 +774,139 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    /**
+     * Function which makes new calendar entry in async task.
+     */
+    private void makeCalendarEntry(String dateOfTraining, String trainingName) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null) {
+            SingleWorkoutActivity.MakeCalendarEntryTask task = new SingleWorkoutActivity.MakeCalendarEntryTask(account.getAccount(), SCOPE);
+            task.setDays(dateOfTraining);
+            task.setTrainingNameme(trainingName);
+            task.execute();
+        }
+    }
+
+    /**
+     * Class which is responsible for making a new calendar entry.
+     */
+    class MakeCalendarEntryTask extends AsyncTask {
+        private final String TAG = "MakeCalendarEntryTask";
+        public static final int MAKE_CALENDAR_ENTRY = 105;
+
+        private Account mAccount;
+        private String mScope;
+        private String mDateOfTraining;
+
+        String trainingName = "";
+        String calendarId = "-1";
+        String calendarTimeZone = "Europe/Warsaw";
+
+        MakeCalendarEntryTask(Account account, String scope) {
+            this.mScope = scope;
+            this.mAccount = account;
+        }
+
+        /**
+         * Executes the asynchronous job. This runs when you call execute()
+         * on the AsyncTask instance.
+         */
+        @Override
+        protected String doInBackground(Object[] objects) {
+            try {
+                GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(SingleWorkoutActivity.this, Collections.singleton(mScope));
+                credential.setSelectedAccount(mAccount);
+                com.google.api.services.calendar.Calendar service = new com.google.api.services.calendar.Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                        .setApplicationName("Make Calendar Entry")
+                        .build();
+
+                // Looking for calendar with name: CALENDAR_NAME.
+                String pageToken = null;
+                CalendarList calendarList = service.calendarList().list().setPageToken(pageToken).execute();
+                List<CalendarListEntry> items = calendarList.getItems();
+
+                for (CalendarListEntry calendarListEntry : items) {
+                    System.out.println(calendarListEntry.getSummary());
+                    if (calendarListEntry.getSummary().equals(CALENDAR_NAME)) {
+                        calendarId = calendarListEntry.getId();
+                        calendarTimeZone = calendarListEntry.getTimeZone();
+                    }
+                }
+                if (calendarId.equals("-1")) {
+                    throw new Exception();
+                }
+
+                // Generating dates of following trainings.
+                Event event = new Event()
+                        .setSummary(trainingName)
+                        .setDescription("A SwimMaster logged training.");
+
+                DateTime startDateTime = new DateTime(mDateOfTraining + "T20:00:00");
+                EventDateTime start = new EventDateTime()
+                        .setDateTime(startDateTime)
+                        .setTimeZone(calendarTimeZone);
+                event.setStart(start);
+
+                DateTime endDateTime = new DateTime(mDateOfTraining + "T21:00:00");
+                EventDateTime end = new EventDateTime()
+                        .setDateTime(endDateTime)
+                        .setTimeZone(calendarTimeZone);
+                event.setEnd(end);
+
+                event = service.events().insert(calendarId, event).execute();
+                Log.i(TAG, "Event created: %s\n" + event.getHtmlLink());
+
+            } catch (
+                    UserRecoverableAuthIOException userRecoverableException) {
+                // Explain to the user again why you need these OAuth permissions
+                // And prompt the resolution to the user again:
+                startActivityForResult(SingleWorkoutActivity.this, userRecoverableException.getIntent(), MAKE_CALENDAR_ENTRY, null);
+            } catch (
+                    IOException e) {
+                // Other non-recoverable exceptions.
+                Log.i(TAG, "IOException - MakeCalendarEntryTask " + e.getMessage());
+            } catch (
+                    Exception e) {
+                Log.i(TAG, "Unable to create events due to calendar missing.");
+                e.printStackTrace();
+            }
+            return calendarId;
+        }
+
+        private void startActivityForResult(Activity mActivity, Intent intent, int rcReauthorize, Bundle bundle) {
+            intent.putExtra("Days", mDateOfTraining);
+            mActivity.startActivityForResult(intent, rcReauthorize, bundle);
+        }
+
+        @Override
+        protected void onCancelled() {
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onProgressUpdate(Object[] values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            //progressBar.setVisibility(View.GONE);
+        }
+
+        private void setDays(String dateOfTraining) {
+            this.mDateOfTraining = dateOfTraining;
+        }
+
+        private void setTrainingNameme(String trainingName) {
+            this.trainingName = trainingName;
+        }
     }
 }

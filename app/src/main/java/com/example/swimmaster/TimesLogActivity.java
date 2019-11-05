@@ -32,25 +32,20 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.swimmaster.ui.main.SectionsPagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static com.example.swimmaster.MainMenuActivity.mDatabaseTimes;
+
 public class TimesLogActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private final static String TAG = "TimesLogActivity";
-    private DatabaseReference mDatabase;
     private long maxId = 0;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mFBUser;
 
     ActionBar actionBar;
     ImageButton profileButton;
@@ -85,7 +80,7 @@ public class TimesLogActivity extends AppCompatActivity implements AdapterView.O
 
         initializeFields();
 
-        mDatabase.child("users").child(mFBUser.getUid()).child("Times").addValueEventListener(new ValueEventListener() {
+        mDatabaseTimes.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -262,7 +257,7 @@ public class TimesLogActivity extends AppCompatActivity implements AdapterView.O
                             time.setDistance(spinnerDistance.getSelectedItem().toString());
                             time.setTime(editTime.getText().toString());
                             time.setDate(editDate.getText().toString());
-                            mDatabase.child("users").child(mFBUser.getUid()).child("Times").child(String.valueOf(maxId)).setValue(time);
+                            mDatabaseTimes.child(String.valueOf(maxId)).setValue(time);
 
                             popupWindow.dismiss();
                         }
@@ -297,12 +292,6 @@ public class TimesLogActivity extends AppCompatActivity implements AdapterView.O
 
         // =========== Add time popup ============
         background = findViewById(R.id.background);
-        // =======================================
-
-        // ============== Database ===============
-        mAuth = FirebaseAuth.getInstance();
-        mFBUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         // =======================================
 
         addTimer = findViewById(R.id.addTimer);

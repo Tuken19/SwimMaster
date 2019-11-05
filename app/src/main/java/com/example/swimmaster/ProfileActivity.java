@@ -22,23 +22,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static com.example.swimmaster.MainMenuActivity.mAuth;
+import static com.example.swimmaster.MainMenuActivity.mDatabaseHome;
+import static com.example.swimmaster.MainMenuActivity.mFBUser;
 import static com.example.swimmaster.MainMenuActivity.mGoogleSignInClient;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private final static String TAG = "ProfileActivity";
-    private DatabaseReference mDatabase;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mFBUser;
     private User mSMUser;
 
     ActionBar actionBar;
@@ -114,7 +110,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         };
 
-        mDatabase.child("users").child(mFBUser.getUid()).addValueEventListener(userListener);
+        mDatabaseHome.child("users").child(mFBUser.getUid()).addValueEventListener(userListener);
 
         // ====================================================
 
@@ -142,10 +138,6 @@ public class ProfileActivity extends AppCompatActivity {
         // =======================================
 
         profileButton = findViewById(R.id.profile);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        mFBUser = mAuth.getCurrentUser();
 
         mPicture = findViewById(R.id.picture);
         mAccountNameField = findViewById(R.id.account_name);
@@ -232,7 +224,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }
 
                 // Edit existing one
-                mDatabase.child("users").child(mFBUser.getUid()).setValue(mSMUser)
+                mDatabaseHome.child("users").child(mFBUser.getUid()).setValue(mSMUser)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

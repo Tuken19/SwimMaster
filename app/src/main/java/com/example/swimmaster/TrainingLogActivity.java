@@ -24,30 +24,25 @@ import com.example.swimmaster.SingleWorkout.SingleWorkout;
 import com.example.swimmaster.SingleWorkout.SingleWorkoutAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static com.example.swimmaster.MainMenuActivity.mDatabaseTrainingLog;
 import static com.example.swimmaster.MainMenuActivity.mWorkoutsList;
 
 public class TrainingLogActivity extends AppCompatActivity {
 
     private final static String TAG = "TrainingLogActivity";
-    private DatabaseReference mDatabase;
     private long maxSWId = 0;
-    private FirebaseAuth mAuth;
-    private FirebaseUser mFBUser;
 
     ListView listViewSingleWorkouts;
     ArrayList<SingleWorkout> arraySingleWorkout;
     SingleWorkoutAdapter arrayAdapterSingleWorkouts;
-    public static final String W_KEY = "Position of Workout";
+    public static final String W_KEY_CREATION_DATE = "Creation Date of workout";
+    public static final String W_KEY_LIST_NAME = "Name of list to which workout belongs";
 
     ActionBar actionBar;
     ImageButton profileButton;
@@ -59,7 +54,7 @@ public class TrainingLogActivity extends AppCompatActivity {
 
         initializeFields();
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabaseTrainingLog.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -90,7 +85,7 @@ public class TrainingLogActivity extends AppCompatActivity {
             arrayAdapterSingleWorkouts = new SingleWorkoutAdapter(this, (ArrayList<SingleWorkout>) mWorkoutsList);
             listViewSingleWorkouts.setAdapter(arrayAdapterSingleWorkouts);
 
-            mDatabase.addValueEventListener(new ValueEventListener() {
+            mDatabaseTrainingLog.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     mWorkoutsList.clear();
@@ -115,7 +110,8 @@ public class TrainingLogActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     SingleWorkout selectedSW = mWorkoutsList.get(position);
-                    String creationDate = selectedSW.getCreationdate();
+                    String selectedListName = selectedSW.getListName();
+                    String creationDate = selectedSW.getCreationDate();
 
                     String transitionName = getString(R.string.name_anim);
                     TextView nameField = view.findViewById(R.id.name_field);
@@ -128,7 +124,8 @@ public class TrainingLogActivity extends AppCompatActivity {
                     pair[1] = new Pair<View, String>(dateField, transitionDate);
 
                     Intent info = new Intent(TrainingLogActivity.this, SingleWorkoutInfoActivity.class);
-                    info.putExtra(W_KEY, creationDate);
+                    info.putExtra(W_KEY_LIST_NAME, selectedListName);
+                    info.putExtra(W_KEY_CREATION_DATE, creationDate);
                     ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(TrainingLogActivity.this, pair);
                     startActivity(info, transitionActivityOptions.toBundle());
                 }
@@ -149,15 +146,15 @@ public class TrainingLogActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 SingleWorkout workout = arraySingleWorkout.get(position);
                                 for (SingleWorkout w : mWorkoutsList) {
-                                    if (w.getName().equals(workout.getName()) && w.getCreationdate().equals(workout.getCreationdate())) {
+                                    if (w.getName().equals(workout.getName()) && w.getCreationDate().equals(workout.getCreationDate())) {
                                         workout = w;
                                     }
                                 }
                                 mWorkoutsList.remove(workout);
-                                String msg = "Name: " + workout.getName() + "Creation date: " + workout.getCreationdate();
+                                String msg = "Name: " + workout.getName() + "Creation date: " + workout.getCreationDate();
                                 Log.e(TAG, msg);
 
-                                mDatabase.setValue(mWorkoutsList)
+                                mDatabaseTrainingLog.setValue(mWorkoutsList)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
@@ -197,10 +194,6 @@ public class TrainingLogActivity extends AppCompatActivity {
         actionBar.setCustomView(actionBarView);
 
         profileButton = findViewById(R.id.profile);
-
-        mAuth = FirebaseAuth.getInstance();
-        mFBUser = mAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("TrainingLog");
 
         listViewSingleWorkouts = findViewById(R.id.list_view_single_workouts);
     }

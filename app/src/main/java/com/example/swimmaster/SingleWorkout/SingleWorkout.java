@@ -9,17 +9,18 @@ import java.util.List;
 public class SingleWorkout implements SingleWorkoutBuilder, Comparable<SingleWorkout> {
     private String mName;
     private String mDate;
+    private String mListName;
     private List<Task> mWarmUp = new ArrayList<>();
     private List<Task> mMainSet = new ArrayList<>();
     private List<Task> mCooldown = new ArrayList<>();
 
     private String mCreationDate;
 
-    SingleWorkout() {
+    public SingleWorkout() {
 
     }
 
-    SingleWorkout(String name, String date, List<Task> warmUp, List<Task> mainSet, List<Task> cooldown, String creationDate) {
+    public SingleWorkout(String name, String date, List<Task> warmUp, List<Task> mainSet, List<Task> cooldown, String creationDate) {
         mName = name;
         mDate = date;
         mWarmUp = warmUp;
@@ -37,6 +38,10 @@ public class SingleWorkout implements SingleWorkoutBuilder, Comparable<SingleWor
         return mDate;
     }
 
+    public String getListName (){
+        return mListName;
+    }
+
     public List<Task> getWarmUp() {
         return mWarmUp;
     }
@@ -49,7 +54,7 @@ public class SingleWorkout implements SingleWorkoutBuilder, Comparable<SingleWor
         return mCooldown;
     }
 
-    public String getCreationdate() {
+    public String getCreationDate() {
         return mCreationDate;
     }
     // =============================
@@ -71,6 +76,11 @@ public class SingleWorkout implements SingleWorkoutBuilder, Comparable<SingleWor
     }
 
     @Override
+    public void setListName (String listName) {
+        this.mListName = listName;
+    }
+
+    @Override
     public void setWarmUp(List<Task> warmUp) {
         mWarmUp = warmUp;
     }
@@ -86,8 +96,8 @@ public class SingleWorkout implements SingleWorkoutBuilder, Comparable<SingleWor
     }
 
     @Override
-    public void setCreationdate(String creationDate) {
-        this.mCreationDate = creationDate;
+    public void setCreationDate(String creationDate) {
+        mCreationDate = creationDate;
     }
 
     @Override
