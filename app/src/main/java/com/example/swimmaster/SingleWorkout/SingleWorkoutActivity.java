@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.swimmaster.MainMenuActivity;
 import com.example.swimmaster.ProfileActivity;
 import com.example.swimmaster.R;
 import com.example.swimmaster.Task;
@@ -69,6 +70,7 @@ import static com.example.swimmaster.MainMenuActivity.mDatabaseSingleWorkout;
 import static com.example.swimmaster.MainMenuActivity.mDatabaseTrainingLog;
 import static com.example.swimmaster.MainMenuActivity.mWorkoutsList;
 import static com.example.swimmaster.MainMenuActivity.mWorkoutsListName;
+import static com.example.swimmaster.MainMenuActivity.personPhoto;
 
 public class SingleWorkoutActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -712,6 +714,8 @@ public class SingleWorkoutActivity extends AppCompatActivity implements AdapterV
         // ====== Add Single Workout popup =======
         background = findViewById(R.id.background);
         // =======================================
+
+        MainMenuActivity.downloadPhoto(profileButton, personPhoto, this);
     }
 
     private boolean validateForm() {

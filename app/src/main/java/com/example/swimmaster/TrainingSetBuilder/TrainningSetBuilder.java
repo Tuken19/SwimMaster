@@ -7,6 +7,8 @@ public interface TrainningSetBuilder {
 
     public void setWeeks(int weeks);
 
+    public void setStrokes(boolean[] strokes);
+
     public void setAdditions(boolean[] additions);
 
     public void setStartingDistance(int startingDistance);

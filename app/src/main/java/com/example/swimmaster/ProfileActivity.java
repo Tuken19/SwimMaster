@@ -27,10 +27,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.example.swimmaster.MainMenuActivity.mAuth;
 import static com.example.swimmaster.MainMenuActivity.mDatabaseHome;
-import static com.example.swimmaster.MainMenuActivity.mFBUser;
 import static com.example.swimmaster.MainMenuActivity.mGoogleSignInClient;
+import static com.example.swimmaster.MainMenuActivity.personPhoto;
+import static com.example.swimmaster.WelcomeActivity.mAuth;
+import static com.example.swimmaster.WelcomeActivity.mFBUser;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -61,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
         // =======================================
 
         mAccountNameField.setText(mFBUser.getDisplayName());
-
+        MainMenuActivity.downloadPhoto(mPicture, personPhoto, this);
 
         // ========== Add or edit user in database ==========
         mSMUser = new User(mFBUser.getDisplayName(), mFBUser.getEmail());
@@ -106,7 +107,8 @@ public class ProfileActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadUser:onCancelled", databaseError.toException());
-                // ...
+                Toast.makeText(ProfileActivity.this,"Access to database denied. Try to login again.", Toast.LENGTH_SHORT).show();
+                signOut();
             }
         };
 
@@ -151,6 +153,8 @@ public class ProfileActivity extends AppCompatActivity {
         editButton = findViewById(R.id.edit);
 
         signOutButton = findViewById(R.id.sign_out);
+
+        MainMenuActivity.downloadPhoto(profileButton, personPhoto, this);
     }
 
     private void signOut() {

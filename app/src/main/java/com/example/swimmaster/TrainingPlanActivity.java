@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,7 @@ import static com.example.swimmaster.MainMenuActivity.SCOPE;
 import static com.example.swimmaster.MainMenuActivity.mDatabaseTrainingPlan;
 import static com.example.swimmaster.MainMenuActivity.mTrainingSetWorkoutsList;
 import static com.example.swimmaster.MainMenuActivity.mWorkoutsList;
+import static com.example.swimmaster.MainMenuActivity.personPhoto;
 import static com.example.swimmaster.TrainingLogActivity.W_KEY_CREATION_DATE;
 import static com.example.swimmaster.TrainingLogActivity.W_KEY_LIST_NAME;
 import static com.example.swimmaster.TrainingSetBuilder.TrainingSet.TRAINING_NAME;
@@ -97,12 +99,18 @@ public class TrainingPlanActivity extends AppCompatActivity {
     CheckBox sunCheckBox;
     EditText editWeeks;
     EditText editDistance;
+    CheckBox butterflyCheckBox;
+    CheckBox backstrokeCheckBox;
+    CheckBox breaststrokeCheckBox;
+    CheckBox freestyleCheckBox;
     CheckBox legsCheckBox;
     CheckBox kickCheckBox;
     CheckBox finsCheckBox;
     CheckBox armsCheckBox;
     CheckBox buoyCheckBox;
     CheckBox paddlesCheckBox;
+
+    ProgressBar progressBar;
 
     ListView listViewOfWorkouts;
     ArrayList<SingleWorkout> arrayOfWorkouts;
@@ -128,50 +136,6 @@ public class TrainingPlanActivity extends AppCompatActivity {
         });
         // ===================
 
-        // ========== Marking events on calendar view ========== // ToDo: Zmienić tak, żeby wyświetlane były wszystkie eventy (TrainingSet, SingleWorkout i Logged)
-        // ========== Calendar view initialising ==========
-        // Today stamp
-        {
-            final CalendarDay today = CalendarDay.today();
-            HashSet<CalendarDay> days = new HashSet<>();
-            days.add(today);
-            Drawable drawable = getDrawable(R.drawable.calendar_today_drawable);
-            TodaysDecorator decorator = new TodaysDecorator(drawable, days);
-            calendarView.addDecorator(decorator);
-        }
-
-        // Logged Workouts
-        if (!(mWorkoutsList.isEmpty())) {
-            final HashSet<CalendarDay> calendarDays;
-            calendarDays = new HashSet<>();
-
-            for(SingleWorkout workout : mWorkoutsList){
-                String date = workout.getDate();
-                CalendarDay swDate = swDateToCalendarDay(date);
-                calendarDays.add(swDate);
-            }
-
-            eventDecorator = new EventDecorator(getResources().getColor(R.color.secondary_dark), calendarDays);
-            calendarView.addDecorator(eventDecorator);
-        }
-
-        // TrainingSet Workouts
-        if (!(mTrainingSetWorkoutsList.isEmpty())) {
-            final HashSet<CalendarDay> calendarDays;
-            calendarDays = new HashSet<>();
-
-            for(SingleWorkout workout : mTrainingSetWorkoutsList){
-                String date = workout.getDate();
-                CalendarDay swDate = swDateToCalendarDay(date);
-                calendarDays.add(swDate);
-            }
-
-            eventDecorator = new EventDecorator(getResources().getColor(R.color.secondary), calendarDays);
-            calendarView.addDecorator(eventDecorator);
-        }
-        // ================================================
-        // ====================================================
-
         // ========== Training generating ==========
         generateTraining.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +152,7 @@ public class TrainingPlanActivity extends AppCompatActivity {
                             boolean[] days = getDays();
                             int numberOfWeeks = getNumberOfWeeks();
                             int startingDistance = getStartingDistance();
+                            boolean[] strokes = getStrokes();
                             boolean[] additions = getAdditions();
 
                             // Creating a training set.
@@ -196,6 +161,7 @@ public class TrainingPlanActivity extends AppCompatActivity {
                             trainingSet.setDays(days);
                             trainingSet.setWeeks(numberOfWeeks);
                             trainingSet.setStartingDistance(startingDistance);
+                            trainingSet.setStrokes(strokes);
                             trainingSet.setAdditions(additions);
                             trainingSet.generateTraining();
                             trainingSet.uploadData(TrainingPlanActivity.this, mDatabaseTrainingPlan);
@@ -212,9 +178,7 @@ public class TrainingPlanActivity extends AppCompatActivity {
                             // Showing generated stuff on calendar view.
                             calendarView.removeDecorator(eventDecorator);
 
-                            HashSet<CalendarDay> calendarDays;
-                            calendarDays = trainingSet.getTrainingDatesCalendarDay();
-                            EventDecorator eventDecorator = new EventDecorator(getResources().getColor(R.color.secondary), calendarDays);
+                            calendarInit();
 
                             calendarView.addDecorator(eventDecorator);
                         } else {
@@ -225,6 +189,7 @@ public class TrainingPlanActivity extends AppCompatActivity {
             }
         });
         // =========================================
+
         // ========== List View uppdating ==========
         arrayAdapterOfWorkouts = new SingleWorkoutAdapter(TrainingPlanActivity.this, arrayOfWorkouts);
         listViewOfWorkouts.setAdapter(arrayAdapterOfWorkouts);
@@ -232,30 +197,7 @@ public class TrainingPlanActivity extends AppCompatActivity {
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
-                //ToDo: Dodać opcję wyświetlania listy treningów w odpowiednim dniu.
-                // Po kliknięciu przekierować do SingleWorkoutInfoActivity.
-
-                arrayOfWorkouts.clear();
-
-                for(SingleWorkout w : mWorkoutsList){
-                    CalendarDay d = swDateToCalendarDay(w.getDate());
-                    if(date.equals(d)){
-                        arrayOfWorkouts.add(w);
-                    }
-                }
-
-                for(SingleWorkout w : mTrainingSetWorkoutsList){
-                    CalendarDay d = swDateToCalendarDay(w.getDate());
-                    if(date.equals(d)){
-                        arrayOfWorkouts.add(w);
-                    }
-                }
-                arrayAdapterOfWorkouts.notifyDataSetChanged();
-
-                calendarView.state().edit()
-                        .setCalendarDisplayMode(CalendarMode.WEEKS)
-                        .commit();
+                updateListView(date);
             }
         });
 
@@ -284,7 +226,33 @@ public class TrainingPlanActivity extends AppCompatActivity {
             }
         });
         // =========================================
+
+        // ========= Marking events on calendar view ==========
+        calendarInit();
+        CalendarDay today = CalendarDay.today();
+        updateListView(today);
+        // ====================================================
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        calendarInit();
+        arrayAdapterOfWorkouts.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(calendarView.getCalendarMode().equals(CalendarMode.WEEKS)){
+            calendarView.state().edit()
+                    .setCalendarDisplayMode(CalendarMode.MONTHS)
+                    .commit();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
 
     /**
      * Function for initialising particular fields.
@@ -319,17 +287,26 @@ public class TrainingPlanActivity extends AppCompatActivity {
         editWeeks = popupView.findViewById(R.id.edit_weeks);
         editDistance = popupView.findViewById(R.id.edit_distance);
 
-        legsCheckBox = popupView.findViewById(R.id.legs);
+        butterflyCheckBox = popupView.findViewById(R.id.butterfly);
+        backstrokeCheckBox = popupView.findViewById(R.id.backstroke);
+        breaststrokeCheckBox = popupView.findViewById(R.id.breaststroke);
+        freestyleCheckBox = popupView.findViewById(R.id.freestyle);
+
+        //legsCheckBox = popupView.findViewById(R.id.legs);
         kickCheckBox = popupView.findViewById(R.id.kick);
         finsCheckBox = popupView.findViewById(R.id.fins);
-        armsCheckBox = popupView.findViewById(R.id.arms);
+        //armsCheckBox = popupView.findViewById(R.id.arms);
         buoyCheckBox = popupView.findViewById(R.id.buoy);
         paddlesCheckBox = popupView.findViewById(R.id.paddles);
+
+        progressBar = findViewById(R.id.progress_bar);
 
         listViewOfWorkouts = findViewById(R.id.list_of_trainings_in_a_day);
         arrayOfWorkouts = new ArrayList<>();
 
         generate = popupView.findViewById(R.id.generate);
+
+        MainMenuActivity.downloadPhoto(profileButton, personPhoto, this);
         // =======================================
     }
 
@@ -347,7 +324,11 @@ public class TrainingPlanActivity extends AppCompatActivity {
                 satCheckBox.isChecked() |
                 sunCheckBox.isChecked()) &&
                 !editWeeks.getText().toString().equals("") &&
-                !editDistance.getText().toString().equals("");
+                !editDistance.getText().toString().equals("") &&
+                (butterflyCheckBox.isChecked() |
+                backstrokeCheckBox.isChecked() |
+                breaststrokeCheckBox.isChecked() |
+                freestyleCheckBox.isChecked());
     }
 
     /**
@@ -383,12 +364,25 @@ public class TrainingPlanActivity extends AppCompatActivity {
      *
      * @return
      */
+    private boolean[] getStrokes() {
+       boolean[] strokes = {false, false, false, false};
+       strokes[0] = butterflyCheckBox.isChecked();
+       strokes[1] = backstrokeCheckBox.isChecked();
+       strokes[2] = breaststrokeCheckBox.isChecked();
+       strokes[3] = freestyleCheckBox.isChecked();
+       return strokes;
+    }
+
+    /**
+     *
+     * @return
+     */
     public boolean[] getAdditions() {
-        boolean[] additions = new boolean[6];
-        additions[0] = legsCheckBox.isChecked();
+        boolean[] additions = {false, false, false, false, false, false};
+        additions[0] = false; //legsCheckBox.isChecked();
         additions[1] = kickCheckBox.isChecked();
         additions[2] = finsCheckBox.isChecked();
-        additions[3] = armsCheckBox.isChecked();
+        additions[3] = false; //armsCheckBox.isChecked();
         additions[4] = buoyCheckBox.isChecked();
         additions[5] = paddlesCheckBox.isChecked();
         return additions;
@@ -539,7 +533,7 @@ public class TrainingPlanActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -550,7 +544,8 @@ public class TrainingPlanActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            //progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            calendarInit();
         }
 
         private void setDays(List<String> datesOfTraining) {
@@ -568,5 +563,76 @@ public class TrainingPlanActivity extends AppCompatActivity {
         int month = Integer.parseInt(date.substring(date.length()-7, date.length()-5));
         int year = Integer.parseInt(date.substring(date.length()-4, date.length()));
         return CalendarDay.from(year, month, day);
+    }
+
+    /**
+     *
+     * @param date
+     */
+    private void updateListView(CalendarDay date){
+        arrayOfWorkouts.clear();
+
+        for(SingleWorkout w : mWorkoutsList){
+            CalendarDay d = swDateToCalendarDay(w.getDate());
+            if(date.equals(d)){
+                arrayOfWorkouts.add(w);
+            }
+        }
+
+        for(SingleWorkout w : mTrainingSetWorkoutsList){
+            CalendarDay d = swDateToCalendarDay(w.getDate());
+            if(date.equals(d)){
+                arrayOfWorkouts.add(w);
+            }
+        }
+        arrayAdapterOfWorkouts.notifyDataSetChanged();
+    }
+
+    /**
+     *
+     */
+    private void calendarInit(){
+        // ========== Calendar view initialising ==========
+        calendarView.removeDecorators();
+        // Today stamp
+        {
+            final CalendarDay today = CalendarDay.today();
+            HashSet<CalendarDay> days = new HashSet<>();
+            days.add(today);
+            Drawable drawable = getDrawable(R.drawable.calendar_today_drawable);
+            TodaysDecorator decorator = new TodaysDecorator(drawable, days);
+            calendarView.addDecorator(decorator);
+        }
+
+        // TrainingSet Workouts
+        if (!(mTrainingSetWorkoutsList.isEmpty())) {
+            final HashSet<CalendarDay> calendarDays;
+            calendarDays = new HashSet<>();
+
+            for(SingleWorkout workout : mTrainingSetWorkoutsList){
+                String date = workout.getDate();
+                CalendarDay swDate = swDateToCalendarDay(date);
+                calendarDays.add(swDate);
+            }
+
+            eventDecorator = new EventDecorator(12, getResources().getColor(R.color.generated), calendarDays);
+            calendarView.addDecorator(eventDecorator);
+        }
+        // ================================================
+
+        // Logged Workouts
+        if (!(mWorkoutsList.isEmpty())) {
+            final HashSet<CalendarDay> calendarDays;
+            calendarDays = new HashSet<>();
+
+            for(SingleWorkout workout : mWorkoutsList){
+                String date = workout.getDate();
+                CalendarDay swDate = swDateToCalendarDay(date);
+                calendarDays.add(swDate);
+            }
+
+            eventDecorator = new EventDecorator(7, getResources().getColor(R.color.logged), calendarDays);
+            calendarView.addDecorator(eventDecorator);
+        }
     }
 }

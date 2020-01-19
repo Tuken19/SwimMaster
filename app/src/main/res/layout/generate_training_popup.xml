@@ -237,6 +237,120 @@
                 android:inputType="number"
                 android:textAlignment="center" />
 
+
+            <!--Additions-->
+            <TextView
+                android:id="@+id/Strokes"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/strokes_question" />
+
+            <GridLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:alignmentMode="alignBounds"
+                android:columnCount="7"
+                android:orientation="horizontal"
+                android:rowOrderPreserved="false"
+                android:useDefaultMargins="true">
+
+                <RelativeLayout
+                    android:id="@+id/r_butterfly"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/butterfly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/fl"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/butterfly"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/butterfly" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_backstroke"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/backstroke"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/bk"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/backstroke"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/backstroke" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_breaststroke"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/breaststroke"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/br"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/breaststroke"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/breaststroke" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/r_freestyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1">
+
+                    <CheckBox
+                        android:id="@+id/freestyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:buttonTint="@color/accent" />
+
+                    <TextView
+                        android:id="@+id/fr"
+                        style="@style/text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/freestyle"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/freestyle" />
+                </RelativeLayout>
+            </GridLayout>
+
+
             <!--Additions-->
             <TextView
                 android:id="@+id/additions"
@@ -253,18 +367,18 @@
                 android:columnCount="2"
                 android:columnOrderPreserved="false"
                 android:orientation="vertical"
-                android:rowCount="3"
+                android:rowCount="2"
                 android:weightSum="10">
 
-                <CheckBox
-                    android:id="@+id/legs"
-                    style="@style/text"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:buttonTint="@color/accent"
-                    android:text="@string/legs" />
+                <!--<CheckBox-->
+                    <!--android:id="@+id/legs"-->
+                    <!--style="@style/text"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:layout_rowWeight="1"-->
+                    <!--android:layout_columnWeight="1"-->
+                    <!--android:buttonTint="@color/accent"-->
+                    <!--android:text="@string/legs" />-->
 
                 <CheckBox
                     android:id="@+id/kick"
@@ -286,15 +400,15 @@
                     android:buttonTint="@color/accent"
                     android:text="@string/fins" />
 
-                <CheckBox
-                    android:id="@+id/arms"
-                    style="@style/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1"
-                    android:buttonTint="@color/accent"
-                    android:text="@string/arms" />
+                <!--<CheckBox-->
+                    <!--android:id="@+id/arms"-->
+                    <!--style="@style/text"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_rowWeight="1"-->
+                    <!--android:layout_columnWeight="1"-->
+                    <!--android:buttonTint="@color/accent"-->
+                    <!--android:text="@string/arms" />-->
 
                 <CheckBox
                     android:id="@+id/buoy"

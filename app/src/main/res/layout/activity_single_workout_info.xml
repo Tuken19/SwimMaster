@@ -18,7 +18,8 @@
     <RelativeLayout
         android:id="@+id/RL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/name"
@@ -62,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/RL"
+        android:layout_above="@+id/log"
         android:fillViewport="true"
         android:overScrollMode="never">
 
@@ -129,4 +131,16 @@
             </com.example.swimmaster.NonScrollListView>
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/log_button"
+        style="@style/text"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/log"
+        android:visibility="visible" />
 </RelativeLayout>

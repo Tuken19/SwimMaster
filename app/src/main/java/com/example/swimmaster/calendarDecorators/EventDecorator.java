@@ -10,10 +10,12 @@ import java.util.HashSet;
 
 public class EventDecorator implements DayViewDecorator {
 
+    private final int size;
     private final int color;
     private final HashSet<CalendarDay> dates;
 
-    public EventDecorator(int color, Collection<CalendarDay> dates) {
+    public EventDecorator(int size, int color, Collection<CalendarDay> dates) {
+        this.size = size;
         this.color = color;
         this.dates = new HashSet<>(dates);
     }
@@ -25,6 +27,6 @@ public class EventDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.addSpan(new DotSpan(6, color));
+        view.addSpan(new DotSpan(size, color));
     }
 }

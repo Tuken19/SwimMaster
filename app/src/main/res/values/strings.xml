@@ -162,5 +162,6 @@
     <string name="days">Which days would you like to swim?</string>
     <string name="weeks">How many weeks would you like to train?</string>
     <string name="starting_distance">What is your starting distance?</string>
+    <string name="strokes_question">Which strokes can you swim?</string>
 </resources>
 

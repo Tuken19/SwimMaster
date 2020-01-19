@@ -41,6 +41,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static com.example.swimmaster.MainMenuActivity.mDatabaseTimes;
+import static com.example.swimmaster.MainMenuActivity.personPhoto;
 
 public class TimesLogActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -296,6 +297,8 @@ public class TimesLogActivity extends AppCompatActivity implements AdapterView.O
 
         addTimer = findViewById(R.id.addTimer);
         addTime = findViewById(R.id.addTime);
+
+        MainMenuActivity.downloadPhoto(profileButton, personPhoto, this);
     }
 
     private boolean validateForm() {

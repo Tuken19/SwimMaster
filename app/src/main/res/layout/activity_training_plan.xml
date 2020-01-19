@@ -15,32 +15,32 @@
         android:background="@drawable/custom_background"
         android:textAlignment="gravity" />
 
-    <ListView
-        android:id="@+id/list_of_trainings_in_a_day"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:focusable="true"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp">
-
-    </ListView>
-
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/list_of_trainings_in_a_day"
-        android:layout_above="@+id/generate_training"
         android:layout_marginBottom="16dp"
         app:mcv_dateTextAppearance="@style/text"
         app:mcv_headerTextAppearance="@style/basic_text"
         app:mcv_selectionColor="@color/accent"
         app:mcv_showOtherDates="all"
+        app:mcv_tileHeight="40dp"
         app:mcv_weekDayTextAppearance="@style/text">
 
-
     </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+    <com.example.swimmaster.NonScrollListView
+        android:id="@+id/list_of_trainings_in_a_day"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/generate_training"
+        android:layout_below="@+id/calendar_view"
+        android:focusable="true"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp">
+
+    </com.example.swimmaster.NonScrollListView>
 
     <Button
         android:id="@+id/generate_training"
@@ -54,5 +54,13 @@
         android:background="@drawable/custom_button"
         android:text="@string/generate"
         android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_background"
+        android:padding="120dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

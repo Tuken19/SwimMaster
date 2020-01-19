@@ -11,7 +11,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
+    public static FirebaseUser mFBUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onStart();
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        final FirebaseUser currentUser = mAuth.getCurrentUser();
+        mFBUser = mAuth.getCurrentUser();
 
         // After 1s go to proper activity
         CountDownTimer cdt = new CountDownTimer(1000, 1000) {
@@ -38,7 +39,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                updateUI(currentUser);
+                updateUI(mFBUser);
             }
         }.start();
     }

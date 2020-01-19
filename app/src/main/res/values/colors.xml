@@ -20,4 +20,7 @@
     <color name="red_transparent">#33F44336</color>
     <color name="error">#F44336</color>
 
+    <color name="logged">#003a4a</color>
+    <color name="generated">#ff6f00</color>
+
 </resources>

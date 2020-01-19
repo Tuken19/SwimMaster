@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -39,8 +42,6 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,18 +49,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static com.example.swimmaster.MainMenuActivity.GetCalendarTask.GET_CALENDAR;
 import static com.example.swimmaster.MainMenuActivity.MakeCalendarTask.MAKE_CALENDAR;
+import static com.example.swimmaster.WelcomeActivity.mFBUser;
 
 public class MainMenuActivity extends AppCompatActivity {
     private final static String TAG = "MainMenuActivity";
 
-    public static FirebaseAuth mAuth;
-    public static FirebaseUser mFBUser;
     public static DatabaseReference mDatabaseHome;
     public static DatabaseReference mDatabaseSingleWorkout;
     public static DatabaseReference mDatabaseTrainingPlan;
@@ -101,13 +102,13 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        // ===== Permissions for reading and writing to calendar =====
-        permissionsForCalendar();
-        // ===========================================================
-
         // =========== Initialisation ============
         initializeFields();
         // =======================================
+
+        // ===== Permissions for reading and writing to calendar =====
+        permissionsForCalendar();
+        // ===========================================================
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -126,6 +127,7 @@ public class MainMenuActivity extends AppCompatActivity {
             personEmail = acct.getEmail();
             personId = acct.getId();
             personPhoto = acct.getPhotoUrl();
+            downloadPhoto(profileButton, personPhoto, this);
         }
         // ================================================================================
 
@@ -240,8 +242,6 @@ public class MainMenuActivity extends AppCompatActivity {
         timesLog = findViewById(R.id.TimesLog);
 
         // ============== Firebase ===============
-        mAuth = FirebaseAuth.getInstance();
-        mFBUser = mAuth.getCurrentUser();
         mDatabaseHome = FirebaseDatabase.getInstance().getReference();
         mDatabaseSingleWorkout = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("SingleWorkout");
         mDatabaseTrainingPlan = FirebaseDatabase.getInstance().getReference().child("users").child(mFBUser.getUid()).child("TrainingPlan");
@@ -510,6 +510,52 @@ public class MainMenuActivity extends AppCompatActivity {
             super.onPostExecute(o);
             progressBar.setVisibility(View.GONE);
 
+        }
+    }
+
+
+    public static void downloadPhoto(ImageView imageView, Uri uri, Context context){
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(context);
+        if (account != null) {
+            DownloadImageTask downloadImageTask = new DownloadImageTask(imageView);
+            downloadImageTask.setUri(uri);
+            downloadImageTask.execute();
+        }
+    }
+
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        private ImageView bmImage;
+        private Uri uri;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            Bitmap bmp = null;
+            try {
+                InputStream in = new java.net.URL(uri.toString()).openStream();
+                bmp = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bmp;
+        }
+
+        public void setUri(Uri uri){
+            this.uri = uri;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            bmImage.setImageResource(R.drawable.custom_account_icon);
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }

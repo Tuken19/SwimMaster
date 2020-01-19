@@ -86,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="swim" />
+                android:text="swim"
+                android:textColor="@color/accent" />
 
             <TextView
                 style="@style/text"
@@ -103,7 +104,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="16dp"
-                android:text="fast" />
+                android:text="fast"
+                android:textColor="@color/accent" />
 
             <TextView
                 style="@style/text"
@@ -120,7 +122,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:text="30" />
+                android:text="30"
+                android:textColor="@color/accent" />
 
             <TextView
                 android:id="@+id/s"
@@ -134,10 +137,11 @@
         <TextView
             android:id="@+id/additions_field"
             style="@style/text"
+            android:textColor="@color/secondary_transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.example.swimmaster.MainMenuActivity.mDatabaseTimes;
+import static com.example.swimmaster.MainMenuActivity.personPhoto;
 
 public class TimerActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -284,6 +285,8 @@ public class TimerActivity extends AppCompatActivity implements AdapterView.OnIt
         saveButton = findViewById(R.id.save);
 
         list = findViewById(R.id.timeList);
+
+        MainMenuActivity.downloadPhoto(profileButton, personPhoto, this);
     }
 
     @Override
