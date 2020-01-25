@@ -66,6 +66,7 @@ public class TrainingLogActivity extends AppCompatActivity {
     public static final String W_KEY_CREATION_DATE = "Creation Date of workout";
     public static final String W_KEY_LIST_NAME = "Name of list to which workout belongs";
 
+    TextView emptyTextView;
     ActionBar actionBar;
     ImageButton profileButton;
 
@@ -123,6 +124,13 @@ public class TrainingLogActivity extends AppCompatActivity {
 
                 }
             });
+
+            if(mWorkoutsList.isEmpty()){
+                emptyTextView.setVisibility(View.VISIBLE);
+            }
+            else{
+                emptyTextView.setVisibility(View.INVISIBLE);
+            }
         }
         // =============================================
 
@@ -223,6 +231,7 @@ public class TrainingLogActivity extends AppCompatActivity {
         profileButton = findViewById(R.id.profile);
 
         listViewSingleWorkouts = findViewById(R.id.list_view_single_workouts);
+        emptyTextView = findViewById(R.id.text_view_empty);
 
         MainMenuActivity.downloadPhoto(profileButton, personPhoto, this);
     }
